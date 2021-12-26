@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import com.revature.models.User;
+import com.revature.repositories.UserDAO;
 
 import java.util.Optional;
 
@@ -18,6 +19,9 @@ import java.util.Optional;
  */
 public class AuthService {
 
+	
+	UserDAO uDAO = new UserDAO(); // to use the methods in UserDAO
+	
     /**
      * <ul>
      *     <li>Needs to check for existing users with username/email provided.</li>
@@ -28,6 +32,7 @@ public class AuthService {
      * </ul>
      */
     public User login(String username, String password) {
+    	
         return null;
     }
 
@@ -45,6 +50,8 @@ public class AuthService {
      * After registration, the id will be a positive integer.
      */
     public User register(User userToBeRegistered) {
+    	
+    	uDAO.create(userToBeRegistered);
         return null;
     }
 

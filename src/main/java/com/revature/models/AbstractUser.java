@@ -29,7 +29,7 @@ public class AbstractUser {
     public AbstractUser() {
         super();
     }
-
+    
     public AbstractUser(int id, String username, String password, Role role) {
         super();
         this.id = id;
@@ -92,4 +92,5 @@ public class AbstractUser {
                 ", role=" + role +
                 '}';
     }
+
 }

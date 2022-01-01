@@ -14,7 +14,9 @@ public class Menu {
 	AuthService as = new AuthService();
 	Scanner scan = new Scanner(System.in);
 	
+	Role role;
 	
+//	Role Role; might need not sure yet
 	
     public void displayMenu() {
     	
@@ -53,7 +55,8 @@ public class Menu {
     	String username = scan.nextLine();
     	System.out.println("*******Please enter your password*******");
     	String password = scan.nextLine();
-    	System.out.println("Successfully Logged In!");
+    	uDAO.verifyUser(username, password);
+//    	System.out.println("Successfully Logged In!");
     }
     
     //create new user method that I will place in the if statement
@@ -74,22 +77,54 @@ public class Menu {
     	String email = scan.nextLine();
     	//check if it is email format?
     	//maybe put this elsewhere? [ role ]
-//    	System.out.println("Lastly what is your role?");
-//    	System.out.println("1 => Employee");
-//    	System.out.println("2 => Finance Manageer"); // might need to add additional to finance manager 
-//    	String roleId = scan.nextLine();
-//    	switch case to see if user typed in employee or finance manager
+    	System.out.println("Lastly what is your role?");
+    	System.out.println("1 => Employee");
+    	System.out.println("2 => Finance Manageer"); // might need to add additional to finance manager 
+    	String roleId = scan.nextLine();
     	
+//    	switch case to see if user typed in employee or finance manager
+//    	need to figure out a way to convert it to a int foreign key since db has roles in separate table 
+    	switch(roleId) {
+    	case "1" : 
+    		
+//    		System.out.println(Role.EMPLOYEE);
+    		role = Role.EMPLOYEE;
+    		break;
+    	case "2" : 
+//    		System.out.println(Role.FINANCE_MANAGER);
+    		role = Role.FINANCE_MANAGER;
+    		//if statement for them to input a code that we can do == operator 
+    		//if correct then continue if not create account fail
+    		break;
+    	default : 
+    		System.out.println("Not Applicable");
+    		break;
+    	}
+    	
+    	//MAYBE REDIRECT USER BACK TO THE LOGIN INTERFACE | TO LOGIN THEIR NEWLY CREATED ACCOUNT
+    	switch(role) {
+    	case EMPLOYEE:
+    		//new method
+    		System.out.println("Hi employee");
+    		break;
+    	case FINANCE_MANAGER: 
+    		//new method
+    		System.out.println("Hi finance manager");
+    		break;
+    	}
+//    	 role = scan.nextLine();
 //    	String roleId = scan.nextLine();											// like a code 
 //    	scan.nextLine();
 //    	System.out.println("Successfully Created");
     	
-    	//at the moment only works for first and last name plus email // testing
-    	User newUser = new User( 0, username, password, null, f_name, l_name, email);
+  
+		//at the moment only works for first and last name plus email // testing
+    	User newUser = new User( 0, username, password, role, f_name, l_name, email);
 //    	AbstractUser newUser = new AbstractUser(username, password, email, role);
     	
     	as.register(newUser);
     	
+    	Login();
     }
 }
 

@@ -3,6 +3,7 @@ package com.revature.services;
 import com.revature.models.User;
 import com.revature.repositories.UserDAO;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -32,6 +33,16 @@ public class AuthService {
      * </ul>
      */
     public User login(String username, String password) {
+    	//might need a statement to select queries to database and check if it's equal
+    	//instead of uDAO.create is there another uDAO method that lets us communicate with db?
+    	//somehow put this java logic into the menu.java with the Login() method...
+    	// probably best to use an if statement
+    	uDAO.verifyUser(username, password);
+    	
+    	
+    	
+    	
+    	
     	
         return null;
     }
@@ -51,7 +62,10 @@ public class AuthService {
      */
     public User register(User userToBeRegistered) {
     	
+    	// try and catch block with the UserNameNotUniqueException 
+    	
     	uDAO.create(userToBeRegistered);
+    	
         return null;
     }
 

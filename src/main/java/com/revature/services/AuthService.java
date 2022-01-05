@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.repositories.UserDAO;
 
@@ -32,21 +33,25 @@ public class AuthService {
      *     <li>Must return user object if the user logs in successfully.</li>
      * </ul>
      */
+	
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
     public User login(String username, String password) {
     	//might need a statement to select queries to database and check if it's equal
     	//instead of uDAO.create is there another uDAO method that lets us communicate with db?
     	//somehow put this java logic into the menu.java with the Login() method...
     	// probably best to use an if statement
     	uDAO.verifyUser(username, password);
-    	
-    	
-    	
-    	
-    	
-    	
+
         return null;
     }
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	public User Login(User userToBeLoggedIn) {
+		
+		uDAO.login(userToBeLoggedIn);
+		
+		return userToBeLoggedIn;
+	}
     /**
      * <ul>
      *     <li>Should ensure that the username/email provided is unique.</li>
@@ -66,7 +71,7 @@ public class AuthService {
     	
     	uDAO.create(userToBeRegistered);
     	
-        return null;
+        return userToBeRegistered;
     }
 
     /**

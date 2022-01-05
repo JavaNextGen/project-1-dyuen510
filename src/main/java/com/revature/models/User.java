@@ -15,11 +15,11 @@ package com.revature.models;
  *
  */
 public class User extends AbstractUser {
-
 	
 	private String f_name;
 	private String l_name;
 	private String email;
+
 	
 	
 
@@ -30,6 +30,7 @@ public class User extends AbstractUser {
     public User(int id, String username, String password, Role role, String f_name, String l_name, String email) {
 		super(id, username, password, role);
 		// TODO Auto-generated constructor stub
+
 		this.f_name = f_name;
 		this.l_name = l_name;
 		this.email = email;
@@ -60,7 +61,8 @@ public class User extends AbstractUser {
     //if not might have to add it here? 
     @Override
     public String toString() {
-    	return "first name: " + f_name + " last name: " + l_name + " email: " + email;
+    	return "first name: " + f_name + " last name: " + l_name + " email: " + email + " password: " + getPassword()
+    	+ " username: " + getUsername() + " role " + getRole();
     }
     
     //Getter and setter methods to access and change private variables above 

@@ -1,9 +1,15 @@
 package com.revature.models;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
+import com.revature.repositories.ReimbursementDAO;
 import com.revature.repositories.UserDAO;
 import com.revature.services.AuthService;
+import com.revature.services.ReimbursementService;
+import com.revature.services.UserService;
 
 
 //placed here temporarily 
@@ -11,7 +17,10 @@ public class Menu {
     //static for now since on the same file
 	
 	UserDAO uDAO = new UserDAO();
+	ReimbursementDAO rDAO = new ReimbursementDAO();
+	ReimbursementService rs = new ReimbursementService();
 	AuthService as = new AuthService();
+	UserService us = new UserService();
 	Scanner scan = new Scanner(System.in);
 	
 	Role role;
@@ -31,6 +40,7 @@ public class Menu {
 		System.out.println("******************************************");
 		System.out.println("1 => Login for existing users");
 		System.out.println("2 => Login for new users");
+		System.out.println("3 checking");
 		String input = scan.nextLine();
 		
 		//.equals compares the values of strings, while == compares the memory location or primitives 
@@ -41,6 +51,24 @@ public class Menu {
 		}else if(input.equals("2")) {
 			System.out.println("new users");
 			NewUser();
+		}else if(input.equals("3")) {
+			System.out.println("enter status");
+			System.out.println("1 -> pending");
+			System.out.println("2 -> approved");
+			System.out.println("3 -> declined");
+			String statusInput = scan.nextLine();
+			Status status = null;
+			if(statusInput.equals("1")) {
+				status = Status.PENDING;
+			}else if(statusInput.equals("2")) {
+				status = Status.APPROVED;
+			}else if(statusInput.equals("3")) {
+				status = Status.DENIED;
+			}else {
+				System.out.println("invalid option, please please please try again or hope that it works.");
+			}
+			rDAO.getByStatus(status);
+			System.out.println(status);
 			//put methods for registering a new user
 		}else {
 			System.out.println("input not valid");
@@ -50,13 +78,53 @@ public class Menu {
     
     //login method for existing users that I will place in the if statement
     public void Login() {
+    	
     	Scanner scan = new Scanner(System.in);
     	System.out.println("*******Please enter your username*******");
     	String username = scan.nextLine();
     	System.out.println("*******Please enter your password*******");
     	String password = scan.nextLine();
-    	uDAO.verifyUser(username, password);
+    
+    	System.out.println("hello world");
+    	uDAO.getByUsername(username);
+    	
+    	//this only returns a STRING, cannot iterate to grab the values
+    	List<User> newDetails = new ArrayList<>();
+    	newDetails.add(us.getByUsername(username).get());
+    	
+    	for(User n : newDetails) {
+    	System.out.println(n);
+    	System.out.println(n.getEmail()); // alright this works!
+    	System.out.println("hello");
+    	if(n.getRole() == Role.EMPLOYEE) {
+    		//method here
+    		System.out.println("Employee Options");
+    		System.out.println("############################################");
+    		System.out.println("What would you like to do today?");
+    		System.out.println("1 => submit reimbursements");
+    		System.out.println("2 => View past tickets"); //can do a sql method which grabs the id of this specific user and view tickets
+    	}else {
+    		//method here
+    	}	System.out.println("Finance Manager Options");
+    		System.out.println("############################################");
+    		System.out.println("What would you like to do today?");
+    		System.out.println("1 -> reimbursements for all employees");
+    		System.out.println("SHOW REIMBURSEMENTS");
+    		System.out.println("1 -> Filter request by status");
+    		System.out.println("2 -> Approve/Deny reimbursements");
+    	
+    	}
+    
+//    	User loggedUser = new User( 0, username, password, role, f_name, l_name, email);
+    	
+    	
 //    	System.out.println("Successfully Logged In!");
+//    	System.out.println(role);
+    	
+    }
+    
+    public void Reimburse() {
+    	rDAO.getByStatus(status);
     }
     
     //create new user method that I will place in the if statement
@@ -127,54 +195,3 @@ public class Menu {
     	Login();
     }
 }
-
-//while(displayMenu) {
-//System.out.println("Please enter your username");
-//String userName = scan.nextLine();
-//System.out.println("********************************************************");
-//System.out.println("Hello " + userName);
-//System.out.println("*********************************************************");
-//System.out.println("Please enter password");
-//String password = scan.nextLine();
-//System.out.println("Successfully logged in");
-//System.out.println("*********************************************************");
-//// for employee | need another one for finance manager
-//
-////call method here ()
-//
-////new method that encapsulates these 
-//System.out.println("How can we help you today?");
-//System.out.println("1 => View past tickets");
-//System.out.println("2 => Add reimbursement request");
-//System.out.println("exit => exit the program");
-//System.out.println("*********************************************************");
-//String input = scan.nextLine();
-//
-//switch(input) {
-//
-//case "1" : {
-//	System.out.println("This would show the past tickets");
-//	System.out.println("What would you like to do next?");
-//	String answer = scan.nextLine();
-//	if(answer.toLowerCase() == 'yes' ) {
-//		
-//	}
-//	break;
-//}
-//
-//case "2" : {
-//	System.out.println("Add a new reimbursement request here");
-//	break;
-//}
-//
-//case "exit" : {
-//	System.out.println("Sucessfully exited the program");
-////	scan.close(); // placed close here that would throw an exception, but mainly for end loop
-//	break;
-//}
-//
-//default : {
-//	System.out.println("Invalid selection please try again");
-//	break;
-//}
-//}

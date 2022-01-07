@@ -31,7 +31,7 @@ public class ReimbursementDAO {
     		// might have to delete since it's menu -> services -> dao -> database
     		//only username here
 
-    		String sql = "SELECT f_name, l_name, reimbursement_id, amount, curr_status, type_name"
+    		String sql = "SELECT f_name, l_name, date_submitted, reimbursement_id, amount, curr_status, type_name"
     				+ " FROM reimbursements"
     				+ " LEFT JOIN curr_users"
     				+ " ON user_fkey_auth = user_id"
@@ -39,7 +39,7 @@ public class ReimbursementDAO {
     				+ " ON status_fkey = status_id"
     				+ " LEFT JOIN reim_types"
     				+ " ON type_fkey = type_id"
-    				+ " WHERE reimbursement = ?";
+    				+ " WHERE reimbursement_id = ?";
     		//might need to join
     		PreparedStatement ps = conn.prepareStatement(sql);
     		
@@ -48,13 +48,15 @@ public class ReimbursementDAO {
     		
     		
     		Optional<Reimbursement> reimburse = Optional.empty();
+    		Optional<Integer> opt = Optional.of(id);
+    		
     		Status enumStatus = null;
     		User u = new User();
 //    	    public Reimbursement(int id, Status status, User author, Date date_submitted, double amount, String description) {
     	    
-
+    		if(opt.isPresent()) {
     		while(rs.next()) {
-    			
+    			System.out.println(rs.getInt("reimbursement_id"));
     			if(rs.getString("curr_status").equals("Approved")) {
     				enumStatus = Status.APPROVED;
     			}else if(rs.getString("curr_status").equals("Declined")){
@@ -64,37 +66,67 @@ public class ReimbursementDAO {
     			}
     			u.setF_name(rs.getString("f_name"));
     			u.setL_name(rs.getString("l_name"));
+//    			String combineName = rs.getString("f_name") + rs.getString("l_name");
+//    			System.out.println(combineName);
+    			System.out.println(rs.getDate("date_submitted"));
     			
     			System.out.println(enumStatus);
-    			Reimbursement e = new Reimbursement(
-						rs.getInt("reimbursement_id"),
-						enumStatus,
-						u,
-						rs.getDate("date_submitted"),
-						rs.getDouble("amount")
-					);
-    			reimburse = Optional.of(e);
     			
+    			if(rs.getInt("reimbursement_id") == id) { //if statement not really needed here
+    				Reimbursement r = new Reimbursement(
+    						rs.getInt("reimbursement_id"),
+    						enumStatus,
+    						u, // this returns an USER object with f_name and l_name but other values are null 
+    						rs.getDate("date_submitted"),
+    						rs.getDouble("amount")
+    						
+    					);
+//    				System.out.println(rs.getString("f_name"));
+//    				System.out.println(u);
+    				System.out.println(r.getId());
+    				System.out.println(r.getAmount());
+        			reimburse = Optional.ofNullable(r);
+//        			System.out.println(reimburse);
+        			}
     			}
+    		System.out.println(reimburse);
     		
-    			return null;
-    	
+    		return reimburse;
+//    			Reimbursement r = new Reimbursement(
+//						id,
+//						enumStatus,
+//						u,
+//						rs.getDate("date_submitted"),
+//						rs.getDouble("amount")
+//					);
+//    			System.out.println(reimburse.isPresent());
+//    			reimburse = Optional.of(r);
+//    			System.out.println(reimburse.isPresent());
+//    			System.out.println();
+//    			System.out.println(reimburse);
+//    			System.out.println(r);
+//    			}
+    		
+    			
+    		}
     }catch (SQLException e) {
     	System.out.println("Something went wrong");
     	e.printStackTrace();
     }
-        return Optional.empty();
+        return null;
     }
 
     /**
      * Should retrieve a List of Reimbursements from the DB with the corresponding Status or an empty List if there are no matches.
      */
 // ############################################# GET BY STATUS #################################################################
+    
+    //------------------------------------NOT WORKING IT RETURNS NULL AND TWO ABSTRACT METHODS FOR SOME REASON-------------------------
     public List<Reimbursement> getByStatus(Status status) {
     	//***********ERROR OF : THE COLUMN INDEX IS OUT OF RANGE: 0, NUMBER OF COLUMNS: 4.**********************
     	
     	try(Connection conn = ConnectionFactory.getConnection()) {
-    		System.out.println(status);
+//    		System.out.println(status);
     		ResultSet rs = null;
     		String sql = "SELECT reimbursement_id, amount, curr_status, type_name"
     				+ " FROM reimbursements"
@@ -123,7 +155,7 @@ public class ReimbursementDAO {
     			};
     			
     			ps.setString(1, currentStatus);
-    			System.out.println(currentStatus);
+//    			System.out.println(currentStatus);
     			ps.executeQuery();
         		
         		rs = ps.executeQuery();
@@ -132,22 +164,24 @@ public class ReimbursementDAO {
 //        		int id, Status status, User author, User resolver, double amount
         		while(rs.next()) {
 
-        			System.out.println("hello worldklfjslkdfjslk");
+//        			System.out.println("hello worldklfjslkdfjslk");
 //        			double dValue = rs.getDouble("amount");
 //        			System.out.println(dValue);
 //        			String check = rs.getString("amount");
-        			System.out.println(rs.getString("type_name"));
-        			System.out.println(rs.getDouble("amount"));
-        			
+//        			System.out.println(rs.getString("type_name"));
+//        			System.out.println(rs.getDouble("amount"));
+//        			
         			//convert enum into a string
 //        			Status currentStatus = Status.valueOf(rs.getString("curr_status"));
 //        			System.out.println(check);
         			Reimbursement e = new Reimbursement(
-        						0,
+        						rs.getInt("reimbursement_id"),
         						rs.getString("type_name"),
         						enumStatus,
         						rs.getDouble("amount")
         					);
+//        			System.out.println(rs.getString("type_name"));
+//        			System.out.println(rs.getString("curr_user"));
 //        			Reimbursement r = new Reimbursement(
 //        					rs.getInt(0),
 //        					rs.getString("type_name"),
@@ -155,7 +189,7 @@ public class ReimbursementDAO {
 //        					rs.getDouble("amount")
 //        					);
         			reimbursementList.add(e);
-        			System.out.println(rs.getString("type_name"));
+        			System.out.println(reimbursementList);
 //        		
     		}
 //        	System.out.println(reimbursementList);
@@ -211,6 +245,9 @@ public class ReimbursementDAO {
     		PreparedStatement ps = conn.prepareStatement(sql);
     		// can declare these variables in the menu and have for loop to get the ints, not sure about the userfkeyresolved though.
     		//also need a if statement to check if the reimbursement belongs to the same user resolving
+    		
+    		// i can have if statements to convert the string inputs to numbers so that I can explicitly update the values on db so no need
+    		// for select with update statements I assume. Not sure about the user_fkey_resolved b/c might need to grab the int?
     		ps.setInt(1, statusFkey);
     		ps.setInt(2, userFkey);
     		ps.setDate(3, dateResolved);

@@ -19,7 +19,7 @@ public class User extends AbstractUser {
 	private String f_name;
 	private String l_name;
 	private String email;
-
+	
 	
 	
 

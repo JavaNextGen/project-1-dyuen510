@@ -17,31 +17,133 @@ import java.sql.Date;
  */
 public class Reimbursement extends AbstractReimbursement {
 
-    public Reimbursement() {
-        super();
-    }
-
+	private int id;
+	private Status status;
+	private double amount;
+	private User author;
+	private User resolver;
+	private Date date_submitted;
+	private Date date_resolved;
+	private String description;
+	private String type;
+	private int status_fkey;
+	private int user_fkey_resolved;
+	
     /**
      * This includes the minimum parameters needed for the {@link com.revature.models.AbstractReimbursement} class.
      * If other fields are needed, please create additional constructors.
      */
-    public Reimbursement(int id, Status status, User author, User resolver, double amount) {
+    
+	public Reimbursement() {
+		super();
+	};
+	
+	public Reimbursement(int id, String type, Status status, double amount) {
+		// TODO Auto-generated constructor stub
+		super();
+		this.id = id;
+		this.type = type;
+		this.status = status;
+		this.amount = amount;
+	
+	}
+	public Reimbursement(int id, int status_fkey, int user_fkey_resolved, Date date_resolved) {
+		super();
+		this.id = id;
+		this.status_fkey = status_fkey;
+		this.user_fkey_resolved = user_fkey_resolved;
+		this.date_resolved = date_resolved;
+		
+	}
+ 
+
+	public Reimbursement(int id, Status status, User author, User resolver, double amount) {
         super(id, status, author, resolver, amount);
     }
     
     //method overloading changing the parameters; this one is for user when they submit request
     public Reimbursement(int id, Status status, User author, Date date_submitted, double amount, String description) {
+    	super();
+    	
     	
     	
     	
     }
-    
+    public Reimbursement(int id, Status status, User author, Date date_submitted, double amount) {
+    	super();
+    	this.id = id;
+    	this.status = status;
+    	this.author = author;
+    	this.date_submitted = date_submitted;
+    	this.amount = amount;
+    	
+    }
     //method overloading changing parameters for manager roles
-    public Reimbursement(int id, Status status, User resolver, Date date_resolved, double amount) {
-    	
-    }
+//    public Reimbursement(int id, Status status, User resolver, Date date_resolved, double amount) {
+//    	
+//    }
 
-	public Reimbursement(int id, String type, Status status, double amount) {
-		// TODO Auto-generated constructor stub
+    public User getResolver() {
+ 		return resolver;
+ 	}
+
+ 	public void setResolver(User resolver) {
+ 		this.resolver = resolver;
+ 	}
+
+ 	public Date getDate_submitted() {
+ 		return date_submitted;
+ 	}
+
+ 	public void setDate_submitted(Date date_submitted) {
+ 		this.date_submitted = date_submitted;
+ 	}
+
+ 	public Date getDate_resolved() {
+ 		return date_resolved;
+ 	}
+
+ 	public void setDate_resolved(Date date_resolved) {
+ 		this.date_resolved = date_resolved;
+ 	}
+
+ 	public String getDescription() {
+ 		return description;
+ 	}
+
+ 	public void setDescription(String description) {
+ 		this.description = description;
+ 	}
+
+ 	public int getStatusFkey() {
+ 		return status_fkey;
+ 	}
+
+ 	public void setStatusFkey(int status_fkey) {
+ 		this.status_fkey = status_fkey;
+ 	}
+
+ 	public int getUserFkeyResolved() {
+ 		return user_fkey_resolved;
+ 	}
+ 	
+	public void setUserFkeyResolved(int user_fkey_resolved) {
+		this.user_fkey_resolved = user_fkey_resolved;
 	}
+
+	@Override
+	public String toString() {
+		return "Reimbursement [id=" + id + ", " + (status != null ? "status=" + status + ", " : "") + "amount=" + amount
+				+ ", " + (author != null ? "author=" + author + ", " : "")
+				+ (resolver != null ? "resolver=" + resolver + ", " : "")
+				+ (date_submitted != null ? "date_submitted=" + date_submitted + ", " : "")
+				+ (date_resolved != null ? "date_resolved=" + date_resolved + ", " : "")
+				+ (description != null ? "description=" + description +", ": "")
+				+ (type != null ? "type=" + type + ", ": "") + " ]";
+	}
+
+
+
+  
+
 }

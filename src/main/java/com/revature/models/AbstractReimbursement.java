@@ -21,11 +21,11 @@ import java.util.Objects;
  */
 public class AbstractReimbursement {
 
-    private int id;
-    private Status status;
-    private User author;
-    private User resolver;
-    private double amount;
+	private transient int id;
+	private transient Status status;
+	private transient double amount;
+	private transient User author;
+	private transient User resolver;
 
     public AbstractReimbursement() {
         super();
@@ -94,13 +94,8 @@ public class AbstractReimbursement {
     }
 
     @Override
-    public String toString() {
-        return "AbstractReimbursement{" +
-                "id=" + id +
-                ", status=" + status +
-                ", author=" + author +
-                ", resolver=" + resolver +
-                ", amount=" + amount +
-                '}';
-    }
+	public String toString() {
+		return "AbstractReimbursement [id=" + id + ", status=" + status + ", author=" + author + ", resolver="
+				+ resolver + ", amount=" + amount + "]";
+	}
 }

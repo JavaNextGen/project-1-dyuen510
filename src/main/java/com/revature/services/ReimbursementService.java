@@ -8,6 +8,7 @@ import com.revature.repositories.UserDAO;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The ReimbursementService should handle the submission, processing,
@@ -52,8 +53,18 @@ public class ReimbursementService {
      */
     public List<Reimbursement> getReimbursementsByStatus(Status status) {
     	
-    	rDAO.getByStatus(status);
+    	List<Reimbursement> statusList = rDAO.getByStatus(status);
     	
-        return Collections.emptyList();
+        return statusList;
     }
+    
+
+//    
+    //GET BY ID
+	public Optional<Reimbursement> getById(int id) {
+		
+		Optional<Reimbursement> reimburse = rDAO.getById(id);
+		
+		return reimburse;
+	}
 }

@@ -51,6 +51,11 @@ public class Menu {
 		}else if(input.equals("2")) {
 			System.out.println("new users");
 			NewUser();
+		}else if(input.equals("4")) {
+			System.out.println("enter an id");
+			int r_id = scan.nextInt();
+			scan.nextLine();
+			rDAO.getById(r_id);
 		}else if(input.equals("3")) {
 			System.out.println("enter status");
 			System.out.println("1 -> pending");
@@ -68,7 +73,7 @@ public class Menu {
 				System.out.println("invalid option, please please please try again or hope that it works.");
 			}
 			rDAO.getByStatus(status);
-			System.out.println(status);
+//			System.out.println(status);
 			//put methods for registering a new user
 		}else {
 			System.out.println("input not valid");
@@ -86,6 +91,8 @@ public class Menu {
     	String password = scan.nextLine();
     
     	System.out.println("hello world");
+    	uDAO.verifyUser(username, password);
+    	
     	uDAO.getByUsername(username);
     	
     	//this only returns a STRING, cannot iterate to grab the values

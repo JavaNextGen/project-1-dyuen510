@@ -53,6 +53,7 @@ public class UserDAO {
     		if(opt.isPresent()) {
     		while(rs.next()) {
     		
+    			
     			if(inputUsername.equals(rs.getString("username"))) {
     				
     				
@@ -69,7 +70,7 @@ public class UserDAO {
     				}
     				
     				User u = new User(
-    							0, 
+    							rs.getInt("user_id"), 
     							rs.getString("username"), 
     							rs.getString("password"), 
 //    							Role.valueOf(rs.getString("user_role")),  I think this is only for grabbing enum data types in db
@@ -103,7 +104,7 @@ public class UserDAO {
     			
     		}
     		}else{
-    				return Optional.empty();
+    		return Optional.empty();
     				
 
     	    			
@@ -247,8 +248,10 @@ public class UserDAO {
     		
 //    		User usa = new User();
     		while(rs.next()) {
+    			
     		String verifyUsername = rs.getString("username");
     		String verifyPassword = rs.getString("password");
+    		
     		
 //    		String verifyRole = rs.getString("user_role");
 //    		int roleNumber;
@@ -300,7 +303,9 @@ public class UserDAO {
     			System.out.println(role);
     			System.out.println(email);
     			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    			
     			return loggedUser;
+    			
     		}else {
     			System.out.println("Username or Password is incorrect.");
     		}

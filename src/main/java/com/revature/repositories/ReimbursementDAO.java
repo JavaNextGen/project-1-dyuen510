@@ -231,16 +231,19 @@ public class ReimbursementDAO {
      *     <li>Should throw an exception if the update is unsuccessful.</li>
      *     <li>Should return a Reimbursement object with updated information.</li>
      * </ul>
+	 * @param resolver 
+	 * @param finalStatus 
      */
     
 // ############################################# UPDATE #################################################################
-    public Reimbursement update(Reimbursement unprocessedReimbursement) {
+    //finalStatus and resolver.....
+    public Reimbursement update(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
     	//in menu I can probably allow user to getById and then process with this
     	// check if it's their own if it is then throw an error
-    	
+    	String statusOutcome = null;
     	try(Connection conn = ConnectionFactory.getConnection()){
-    	
-    		String sql = "UPDATE reimbursements SET status_fkey = ?, user_fkey_resolved = ?, date_resolved = ? WHERE id = ?";
+    		
+    		String sql = "UPDATE reimbursements SET status_fkey = ?, user_fkey_resolved = ?, date_resolved = ? WHERE reimbursement_id = ?";
     		
     		PreparedStatement ps = conn.prepareStatement(sql);
     		// can declare these variables in the menu and have for loop to get the ints, not sure about the userfkeyresolved though.
@@ -248,20 +251,26 @@ public class ReimbursementDAO {
     		
     		// i can have if statements to convert the string inputs to numbers so that I can explicitly update the values on db so no need
     		// for select with update statements I assume. Not sure about the user_fkey_resolved b/c might need to grab the int?
-    		ps.setInt(1, statusFkey);
-    		ps.setInt(2, userFkey);
-    		ps.setDate(3, dateResolved);
-    		ps.setId(4, reimID);
-    		
+    		System.out.println(unprocessedReimbursement.getStatusFkey());
+    		ps.setInt(1, unprocessedReimbursement.getStatusFkey());
+    		ps.setInt(2, unprocessedReimbursement.getUserFkeyResolved()); 
+    		ps.setDate(3, unprocessedReimbursement.getDate_resolved()); //Date at the menu or automatically set a date when user submits?
+    		ps.setInt(4, unprocessedReimbursement.getId());
+    		System.out.println(unprocessedReimbursement);
+    		System.out.println(unprocessedReimbursement.getId());
     		ps.executeUpdate();
+    		//if statements for status.
+    		if(unprocessedReimbursement.getStatusFkey() == 2){
+    			statusOutcome = "Approved";
+    		}else if(unprocessedReimbursement.getStatusFkey() == 3) {
+    			statusOutcome = "Denied";
+    		}
     		
-    		//return a Reimbursement object with the updated information
-    		//
-    		System.out.println("Updated");
-    	}catch(SQLException e) {
-    		System.out.println("Error updating");
+    		System.out.println("Successfully " + statusOutcome + " reimbursement ticket " + unprocessedReimbursement.getId());
+    	}catch(SQLException e){
+    		System.out.println("Update Error");
     		e.printStackTrace();
     	}
-    	return null;
+    	return unprocessedReimbursement;
     }
 }

@@ -44,8 +44,11 @@ public class ReimbursementService {
      * The Resolver should be null. Additional fields may be null.
      * After processing, the reimbursement will have its status changed to either APPROVED or DENIED.
      */
-    public Reimbursement process(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
-        return null;
+	
+	//changed to void because we don't have to return anything?
+    public void process(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
+    	
+        rDAO.update(unprocessedReimbursement, finalStatus, resolver);
     }
 
     /**

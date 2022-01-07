@@ -40,7 +40,12 @@ public class User extends AbstractUser {
         super();
     }
 
-    /**
+    public User(int i, String username) {
+		// TODO Auto-generated constructor stub
+    	super();
+	}
+
+	/**
      * This includes the minimum parameters needed for the {@link com.revature.models.AbstractUser} class.
      * If other fields are needed, please create additional constructors.
      */

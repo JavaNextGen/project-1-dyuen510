@@ -1,6 +1,9 @@
 package com.revature.models;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -93,6 +96,38 @@ public class Menu {
     	System.out.println("hello world");
     	uDAO.verifyUser(username, password);
     	
+    	
+    	//###################################TESTING UPDATE#############################################################
+    	System.out.println("testing update a reimbursement ticket?");
+    	System.out.println("enter ticket ID");
+        int id = scan.nextInt();
+        System.out.println(id);
+        scan.nextLine();
+        System.out.println("Approve or Deny");
+        String status = scan.nextLine(); // might need an if statement
+        Status finalStatus = null;
+        int status_fkey = 1;
+        int user_fkey_resolved = 0;
+        
+        if(status.equals("Approve")){
+        	finalStatus = Status.APPROVED;
+        	status_fkey = 2;
+        }else if(status.equals("Denied")) {
+        	finalStatus = Status.DENIED;
+        	status_fkey = 3;
+        }
+        
+        User resolver = new User(0, username);
+        
+        
+        Date date_resolved = null;
+
+        Reimbursement unprocessedReimbursement = new Reimbursement(id, status_fkey, user_fkey_resolved, date_resolved);
+        
+        rs.process(unprocessedReimbursement, finalStatus, resolver);
+        
+        
+//    	rDAO.update(id, finalStatus, resolver)
     	uDAO.getByUsername(username);
     	
     	//this only returns a STRING, cannot iterate to grab the values

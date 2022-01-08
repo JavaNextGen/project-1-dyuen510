@@ -240,37 +240,145 @@ public class ReimbursementDAO {
     public Reimbursement update(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
     	//in menu I can probably allow user to getById and then process with this
     	// check if it's their own if it is then throw an error
-    	String statusOutcome = null;
+//    	String statusOutcome = null;
     	try(Connection conn = ConnectionFactory.getConnection()){
+    		ResultSet rs = null;
+    		//Thoughts :
+    	//In this method I need to use the grab the f_name and maybe last name in the curr_users table as resolver with select query
+    	//don't need to select the status table. I can just use the foreign key number and convert it to the enum by finalStatus = Status.APPROVED
+    	//Assuming date is not working since data.now() format includes h/m/s and sql I used DATE instead of TIMESTAMP
+    	//Also need reimbursement_id to show up, for some reason none of the data is coming back?
+    	
+    	//Basically I just need to insert to the reimbursement table by selecting the reimbursement_id and updating 
+    		// status_fkey, user_fkey_resolved, and date_resolved
+    	
+    	//Attempting to use mutliple queries with 
     		
+//    		----> doesn't work with two? 
+//    		ResultSet rs = null;
+//    		String sql2 = "SELECT * FROM curr_users WHERE username = ?";
+//    		PreparedStatement ds = conn.prepareStatement(sql2);
+//    		ds.setString(1, resolver.getUsername());
+//    		ds.executeQuery();
+//    		while(rs.next()) {
+//    			rs.getString("f_name");
+//    		}
+//    	
+//    		-----> end here 
+    		
+//    		something else
+//    		List<User> currentUser = new ArrayList<>();
+    		int resolve_key = 0;
+    		String userSql = "SELECT * FROM curr_users WHERE username = ?";
+    		try (PreparedStatement ps = conn.prepareStatement(userSql)){
+    			ps.setString(1, resolver.getUsername());
+    			ps.executeQuery();
+    			rs = ps.executeQuery();
+//    			(int id, String username, String password, Role role, String f_name, String l_name, String email)
+    			Role enumRole = null;
+    			
+    			
+    			while(rs.next()) {
+    				
+    				resolve_key = rs.getInt("user_id");
+    				int enumRoleId = rs.getInt("user_role_fkey");
+        			if(enumRoleId == 1) {
+        				enumRole = Role.EMPLOYEE;
+        			}else {
+        				enumRole = Role.FINANCE_MANAGER;
+        			};
+        		
+    				User u = new User(
+    				rs.getInt("user_id"), 
+    				rs.getString("f_name"),
+    				rs.getString("l_name")
+    				);
+    				
+    				resolver = u;
+    				System.out.println(resolver);
+    				System.out.println("testing 123");
+    			}
+    			
+    			
+//    			System.out.println(currentUser);
+    			System.out.println(resolve_key);
+    		}catch(SQLException e) {
+    			System.out.println("error");
+    			e.printStackTrace();
+    		}
     		String sql = "UPDATE reimbursements SET status_fkey = ?, user_fkey_resolved = ?, date_resolved = ? WHERE reimbursement_id = ?";
-    		
-    		PreparedStatement ps = conn.prepareStatement(sql);
-    		// can declare these variables in the menu and have for loop to get the ints, not sure about the userfkeyresolved though.
-    		//also need a if statement to check if the reimbursement belongs to the same user resolving
-    		
-    		// i can have if statements to convert the string inputs to numbers so that I can explicitly update the values on db so no need
-    		// for select with update statements I assume. Not sure about the user_fkey_resolved b/c might need to grab the int?
-    		System.out.println(unprocessedReimbursement.getStatusFkey());
-    		ps.setInt(1, unprocessedReimbursement.getStatusFkey());
-    		ps.setInt(2, unprocessedReimbursement.getUserFkeyResolved()); 
-    		ps.setDate(3, unprocessedReimbursement.getDate_resolved()); //Date at the menu or automatically set a date when user submits?
-    		ps.setInt(4, unprocessedReimbursement.getId());
-    		System.out.println(unprocessedReimbursement);
-    		System.out.println(unprocessedReimbursement.getId());
-    		ps.executeUpdate();
-    		//if statements for status.
-    		if(unprocessedReimbursement.getStatusFkey() == 2){
-    			statusOutcome = "Approved";
-    		}else if(unprocessedReimbursement.getStatusFkey() == 3) {
-    			statusOutcome = "Denied";
+    		try (PreparedStatement ps = conn.prepareStatement(sql)){
+//        		System.out.println(unprocessedReimbursement.getStatusFkey());
+//        		System.out.println("heulskdjflk");
+    			ps.setInt(1, unprocessedReimbursement.getStatusFkey());
+    			ps.setInt(2, resolve_key); // 0 for now
+    			ps.setDate(3, unprocessedReimbursement.getDate_resolved());
+    			ps.setInt(4, unprocessedReimbursement.getId());
+    			ps.executeUpdate();
+    			
+    			System.out.println("Reimbursment ticket " + unprocessedReimbursement.getId() + " by " + resolver  );
+    			System.out.println(unprocessedReimbursement.getStatusFkey());
+    			System.out.println(unprocessedReimbursement.getId());
+    			System.out.println(unprocessedReimbursement.getUserFkeyResolved());
+    			System.out.println(unprocessedReimbursement.getDate_resolved());
+    			
+    		}catch(SQLException e) {
+    			System.out.println("something went wrong");
+    			e.printStackTrace();
     		}
     		
-    		System.out.println("Successfully " + statusOutcome + " reimbursement ticket " + unprocessedReimbursement.getId());
-    	}catch(SQLException e){
-    		System.out.println("Update Error");
+    		
+//    		String sql2 = "SELECT * FROM reimbursements WHERE reimbursement_id = ?";
+//    		try (PreparedStatement ps = conn.prepareStatement(sql2)){
+//    			ps.setInt(1, unprocessedReimbursement.getId());
+//    			rs = ps.executeQuery();
+//    			
+//    		}catch(SQLException e) {
+//    			System.out.println("yikes");
+//    			e.printStackTrace();
+//    		}
+    	}catch(SQLException e) {
+    		System.out.println("yikes");
     		e.printStackTrace();
+    		
     	}
-    	return unprocessedReimbursement;
+    	return null;
     }
+//    		String sql = "UPDATE reimbursements SET status_fkey = ?, user_fkey_resolved = ?, date_resolved = ? WHERE reimbursement_id = ?";
+//
+//    		PreparedStatement ps = conn.prepareStatement(sql);
+//    		// can declare these variables in the menu and have for loop to get the ints, not sure about the userfkeyresolved though.
+//    		//also need a if statement to check if the reimbursement belongs to the same user resolving
+//    		
+//    		// i can have if statements to convert the string inputs to numbers so that I can explicitly update the values on db so no need
+//    		// for select with update statements I assume. Not sure about the user_fkey_resolved b/c might need to grab the int?
+//    		System.out.println(unprocessedReimbursement.getStatusFkey());
+//    		ps.setInt(1, unprocessedReimbursement.getStatusFkey());
+//    		ps.setInt(2, unprocessedReimbursement.getUserFkeyResolved()); 
+//    		ps.setDate(3, unprocessedReimbursement.getDate_resolved()); //Date at the menu or automatically set a date when user submits?
+//    		ps.setInt(4, unprocessedReimbursement.getId());
+////    		System.out.println(unprocessedReimbursement);
+//    		System.out.println(unprocessedReimbursement.getId());
+//    		System.out.println(unprocessedReimbursement.getId());
+//    		System.out.println(unprocessedReimbursement);
+//    		System.out.println(finalStatus);
+//    		System.out.println(resolver);
+//    		System.out.println(unprocessedReimbursement.getId());
+//    		System.out.println(unprocessedReimbursement.getId());
+//    		
+//    		ps.executeUpdate();
+//    		//if statements for status.
+//    		if(unprocessedReimbursement.getStatusFkey() == 2){
+//    			statusOutcome = "Approved";
+//    		}else if(unprocessedReimbursement.getStatusFkey() == 3) {
+//    			statusOutcome = "Denied";
+//    		}
+//    		
+//    		System.out.println("Successfully " + statusOutcome + " reimbursement ticket " + unprocessedReimbursement.getId());
+//    	}catch(SQLException e){
+//    		System.out.println("Update Error");
+//    		e.printStackTrace();
+//    	}
+//    	return unprocessedReimbursement;
+//    }
 }

@@ -84,7 +84,16 @@ public class Reimbursement extends AbstractReimbursement {
 //    	
 //    }
 
-    public User getResolver() {
+    public Reimbursement(int id, String type, Status status, double amount) {
+		// TODO Auto-generated constructor stub
+    	super();
+    	this.id = id;
+    	this.type = type;
+    	this.status = status;
+    	this.amount = amount;
+	}
+
+	public User getResolver() {
  		return resolver;
  	}
 
@@ -213,8 +222,9 @@ public class Reimbursement extends AbstractReimbursement {
 				+ (resolver != null ? "resolver=" + resolver + ", " : "")
 				+ (date_submitted != null ? "date_submitted=" + date_submitted + ", " : "")
 				+ (date_resolved != null ? "date_resolved=" + date_resolved + ", " : "")
-				+ (description != null ? "description=" + description +", ": "")
-				+ (type != null ? "type=" + type + ", ": "") + " ]";
+				+ (description != null ? "description=" + description + ", " : "")
+				+ (type != null ? "type=" + type + ", " : "") + "status_fkey=" + status_fkey + ", user_fkey_resolved="
+				+ user_fkey_resolved + "]";
 	}
 
 

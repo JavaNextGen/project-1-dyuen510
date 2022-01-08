@@ -26,6 +26,13 @@ public class User extends AbstractUser {
 	// created a constructor that has the abstract arguments [username, password, role] 
 	// and then added the concrete arguments [ f_name, l_name, email ]
 	
+	//new constructor
+	public User(int id, String f_name, String l_name) {
+		super();
+		this.f_name = f_name;
+		this.l_name = l_name;
+	}
+	
 	//need to see how to get the Role since the data type is int in db, but String? on DML?
     public User(int id, String username, String password, Role role, String f_name, String l_name, String email) {
 		super(id, username, password, role);

@@ -103,60 +103,64 @@ public class Menu {
         int id = scan.nextInt();
         System.out.println(id);
         scan.nextLine();
-        System.out.println("Approve or Deny");
+//        System.out.println("Approve or Deny");
         String status = scan.nextLine(); // might need an if statement
         Status finalStatus = null;
         int status_fkey = 1;
         int user_fkey_resolved = 0;
         
-        if(status.equals("Approve")){
+        if(status.equals("Approve") || status.equals("Approved")){
         	finalStatus = Status.APPROVED;
         	status_fkey = 2;
-        }else if(status.equals("Denied")) {
+        }else if(status.equals("Deny") || status.equals("Denied")) {
         	finalStatus = Status.DENIED;
         	status_fkey = 3;
         }
         
-        User resolver = new User(0, username);
+        User resolver = new User(0,username);
+        resolver.setUsername(username);
+        
         
         
         Date date_resolved = null;
 
         Reimbursement unprocessedReimbursement = new Reimbursement(id, status_fkey, user_fkey_resolved, date_resolved);
         
-        rs.process(unprocessedReimbursement, finalStatus, resolver);
+//        rs.process(unprocessedReimbursement, finalStatus, resolver);
         
-        
-//    	rDAO.update(id, finalStatus, resolver)
-    	uDAO.getByUsername(username);
+        //update or process?
+    	rs.process(unprocessedReimbursement, finalStatus, resolver);
+//    	uDAO.getByUsername(username);
     	
     	//this only returns a STRING, cannot iterate to grab the values
-    	List<User> newDetails = new ArrayList<>();
-    	newDetails.add(us.getByUsername(username).get());
-    	
-    	for(User n : newDetails) {
-    	System.out.println(n);
-    	System.out.println(n.getEmail()); // alright this works!
-    	System.out.println("hello");
-    	if(n.getRole() == Role.EMPLOYEE) {
-    		//method here
-    		System.out.println("Employee Options");
-    		System.out.println("############################################");
-    		System.out.println("What would you like to do today?");
-    		System.out.println("1 => submit reimbursements");
-    		System.out.println("2 => View past tickets"); //can do a sql method which grabs the id of this specific user and view tickets
-    	}else {
-    		//method here
-    	}	System.out.println("Finance Manager Options");
-    		System.out.println("############################################");
-    		System.out.println("What would you like to do today?");
-    		System.out.println("1 -> reimbursements for all employees");
-    		System.out.println("SHOW REIMBURSEMENTS");
-    		System.out.println("1 -> Filter request by status");
-    		System.out.println("2 -> Approve/Deny reimbursements");
-    	
-    	}
+//    	List<User> newDetails = new ArrayList<>();
+//    	newDetails.add(us.getByUsername(username).get());
+//    	
+//    	for(User n : newDetails) {
+//    	System.out.println(n);
+//    	System.out.println(n.getEmail()); // alright this works!
+//    	System.out.println("hello");
+//    	if(n.getRole() == Role.EMPLOYEE) {
+//    		//method here
+//    		System.out.println("Employee Options");
+//    		System.out.println("############################################");
+//    		System.out.println("What would you like to do today?");
+//    		System.out.println("1 => submit reimbursements");
+//    		System.out.println("2 => View past tickets"); //can do a sql method which grabs the id of this specific user and view tickets
+//    	}else {
+//    		//method here
+//    	}	System.out.println("Finance Manager Options");
+//    		System.out.println("############################################");
+//    		System.out.println("What would you like to do today?");
+//    		System.out.println("1 -> reimbursements for all employees");
+//    		System.out.println("SHOW REIMBURSEMENTS");
+//    		System.out.println("1 -> Filter request by status");
+//    		System.out.println("2 -> Approve/Deny reimbursements");
+//    	
+//    	}
     
+        
+        //#####################################dont need##############################################
 //    	User loggedUser = new User( 0, username, password, role, f_name, l_name, email);
     	
     	

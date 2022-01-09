@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -242,7 +243,13 @@ public class ReimbursementDAO {
     	// check if it's their own if it is then throw an error
 //    	String statusOutcome = null;
     	try(Connection conn = ConnectionFactory.getConnection()){
-    		ResultSet rs = null;
+//    		ResultSet rs = null;
+    		
+    		//Maybe change everything to local date?
+    		LocalDate localD = LocalDate.now();
+    		java.sql.Date date_resolved = java.sql.Date.valueOf(localD);
+    		System.out.println(localD);
+//    		Date date = Date.from(localD.now());
     		//Thoughts :
     	//In this method I need to use the grab the f_name and maybe last name in the curr_users table as resolver with select query
     	//don't need to select the status table. I can just use the foreign key number and convert it to the enum by finalStatus = Status.APPROVED
@@ -266,53 +273,20 @@ public class ReimbursementDAO {
 //    	
 //    		-----> end here 
     		
+    		//TEsting getByUSername instead*************************************************
+    		
 //    		something else
 //    		List<User> currentUser = new ArrayList<>();
-    		int resolve_key = 0;
-    		String userSql = "SELECT * FROM curr_users WHERE username = ?";
-    		try (PreparedStatement ps = conn.prepareStatement(userSql)){
-    			ps.setString(1, resolver.getUsername());
-    			ps.executeQuery();
-    			rs = ps.executeQuery();
-//    			(int id, String username, String password, Role role, String f_name, String l_name, String email)
-    			Role enumRole = null;
-    			
-    			
-    			while(rs.next()) {
-    				
-    				resolve_key = rs.getInt("user_id");
-    				int enumRoleId = rs.getInt("user_role_fkey");
-        			if(enumRoleId == 1) {
-        				enumRole = Role.EMPLOYEE;
-        			}else {
-        				enumRole = Role.FINANCE_MANAGER;
-        			};
-        		
-    				User u = new User(
-    				rs.getInt("user_id"), 
-    				rs.getString("f_name"),
-    				rs.getString("l_name")
-    				);
-    				
-    				resolver = u;
-    				System.out.println(resolver);
-    				System.out.println("testing 123");
-    			}
-    			
-    			
-//    			System.out.println(currentUser);
-    			System.out.println(resolve_key);
-    		}catch(SQLException e) {
-    			System.out.println("error");
-    			e.printStackTrace();
-    		}
+//    		int resolve_key = 0;
+
     		String sql = "UPDATE reimbursements SET status_fkey = ?, user_fkey_resolved = ?, date_resolved = ? WHERE reimbursement_id = ?";
     		try (PreparedStatement ps = conn.prepareStatement(sql)){
 //        		System.out.println(unprocessedReimbursement.getStatusFkey());
 //        		System.out.println("heulskdjflk");
     			ps.setInt(1, unprocessedReimbursement.getStatusFkey());
-    			ps.setInt(2, resolve_key); // 0 for now
-    			ps.setDate(3, unprocessedReimbursement.getDate_resolved());
+    			ps.setInt(2, unprocessedReimbursement.getUserFkeyResolved()); // 0 for now
+//    			ps.setDate(3, unprocessedReimbursement.getDate_resolved());
+    			ps.setDate(3, date_resolved);
     			ps.setInt(4, unprocessedReimbursement.getId());
     			ps.executeUpdate();
     			
@@ -320,7 +294,7 @@ public class ReimbursementDAO {
     			System.out.println(unprocessedReimbursement.getStatusFkey());
     			System.out.println(unprocessedReimbursement.getId());
     			System.out.println(unprocessedReimbursement.getUserFkeyResolved());
-    			System.out.println(unprocessedReimbursement.getDate_resolved());
+    			System.out.println(date_resolved);
     			
     		}catch(SQLException e) {
     			System.out.println("something went wrong");
@@ -342,7 +316,7 @@ public class ReimbursementDAO {
     		e.printStackTrace();
     		
     	}
-    	return null;
+    return null;
     }
 //    		String sql = "UPDATE reimbursements SET status_fkey = ?, user_fkey_resolved = ?, date_resolved = ? WHERE reimbursement_id = ?";
 //
@@ -381,4 +355,8 @@ public class ReimbursementDAO {
 //    	}
 //    	return unprocessedReimbursement;
 //    }
+    
+    public PreparedStatement setLocalDate(int index, final LocalDate value) {
+    	return setLocalDate(index, value);
+    };
 }

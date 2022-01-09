@@ -1,6 +1,7 @@
 package com.revature.models;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -92,7 +93,9 @@ public class Menu {
     	String username = scan.nextLine();
     	System.out.println("*******Please enter your password*******");
     	String password = scan.nextLine();
-    
+    		// ctx.cookieStore(1, newUser);
+    		// User newUser = ctx.cookieStore<User>("newUser")
+    		// newUser.getUsername(); etc......
     	System.out.println("hello world");
     	uDAO.verifyUser(username, password);
     	
@@ -107,7 +110,7 @@ public class Menu {
         String status = scan.nextLine(); // might need an if statement
         Status finalStatus = null;
         int status_fkey = 1;
-        int user_fkey_resolved = 0;
+//        int user_fkey_resolved = 0;
         
         if(status.equals("Approve") || status.equals("Approved")){
         	finalStatus = Status.APPROVED;
@@ -117,14 +120,32 @@ public class Menu {
         	status_fkey = 3;
         }
         
-        User resolver = new User(0,username);
-        resolver.setUsername(username);
+        //adding the getByUsername here to grab the data from curr_user table
+        Optional<User> preResolve = uDAO.getByUsername(username);
+//        User resolve = new User();
+        System.out.println(preResolve);
+        System.out.println();
+        System.out.println("edoeksjdlfkj");
+//        System.out.println(uDAO.getByUsername(username).get());
+//        System.out.println(uDAO.getByUsername(username).getF_name());
+        System.out.println(preResolve.get().getF_name());
+        System.out.println("here e here e");
+        User resolver = new User();
+        int resolver_fkey = preResolve.get().getId();
+        System.out.println(preResolve.get().getId());
+        resolver.setF_name(preResolve.get().getF_name());
+        resolver.setL_name(preResolve.get().getL_name());
+        System.out.println(resolver);
         
-        
-        
+        Role enumRole = null;
+//        LocalDate date_resolved = new localDate.now();
+//        Date date_resolved = null;
+//        LocalDate date_resolved = LocalDate.now();
         Date date_resolved = null;
-
-        Reimbursement unprocessedReimbursement = new Reimbursement(id, status_fkey, user_fkey_resolved, date_resolved);
+        System.out.println(id);
+        System.out.println(id);
+        
+        Reimbursement unprocessedReimbursement = new Reimbursement(id, status_fkey, resolver_fkey , date_resolved);
         
 //        rs.process(unprocessedReimbursement, finalStatus, resolver);
         
@@ -237,6 +258,7 @@ public class Menu {
 //    	AbstractUser newUser = new AbstractUser(username, password, email, role);
     	
     	as.register(newUser);
+    	//ctx.cookie(some,something)
     	
     	Login();
     }

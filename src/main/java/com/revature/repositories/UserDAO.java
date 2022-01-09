@@ -89,8 +89,8 @@ public class UserDAO {
 //    				if(userDetails != null) {
 //    					System.out.println(userDetails.get());
 //    				}
-    				System.out.println(u.getRole());
-    				System.out.println(u.getUsername());
+//    				System.out.println(u.getRole());
+//    				System.out.println(u.getUsername());
 //    				System.out.println("Username Located:");
 //    				System.out.println("username: " + rs.getString("username"));
 //    				System.out.println("email: " + rs.getString("email"));
@@ -99,6 +99,7 @@ public class UserDAO {
 //    				System.out.println(Role.valueOf(rs.getString("user_role").toUpperCase()));
     			}
     			System.out.println(userDetails);
+    			System.out.println("hello");
     			return userDetails;
     			
     			

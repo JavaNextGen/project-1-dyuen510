@@ -60,9 +60,21 @@ public class Reimbursement extends AbstractReimbursement {
 
 	public Reimbursement(int id, Status status, User author, User resolver, double amount) {
         super(id, status, author, resolver, amount);
+        this.id = id;
+        this.status = status;
+        this.author = author;
+        this.resolver = resolver;
     }
   
-    //method overloading changing the parameters; this one is for user when they submit request
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	//method overloading changing the parameters; this one is for user when they submit request
     public Reimbursement(int id, Status status, User author, Date date_submitted, double amount, String description) {
     	super();
     	

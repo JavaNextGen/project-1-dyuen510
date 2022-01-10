@@ -28,8 +28,12 @@ public class Reimbursement extends AbstractReimbursement {
 	private String type;
 	private int status_fkey;
 	private int user_fkey_resolved;
+	private byte receipt;
+	private int type_id;
+	private int user_fkey_author;
 	
-    /**
+
+	/**
      * This includes the minimum parameters needed for the {@link com.revature.models.AbstractReimbursement} class.
      * If other fields are needed, please create additional constructors.
      */
@@ -56,7 +60,20 @@ public class Reimbursement extends AbstractReimbursement {
 		this.date_resolved = date_resolved;
 		
 	}
+	
+	
  
+
+	public Reimbursement(int id, Status status, User resolver, Date date_resolved, int status_fkey,
+		int user_fkey_resolved) {
+	super();
+	this.id = id;
+	this.status = status;
+	this.resolver = resolver;
+	this.date_resolved = date_resolved;
+	this.status_fkey = status_fkey;
+	this.user_fkey_resolved = user_fkey_resolved;
+}
 
 	public Reimbursement(int id, Status status, User author, User resolver, double amount) {
         super(id, status, author, resolver, amount);
@@ -75,6 +92,18 @@ public class Reimbursement extends AbstractReimbursement {
 	}
 
 	//method overloading changing the parameters; this one is for user when they submit request
+	
+	public Reimbursement(int id, Status status, double amount, int user_fkey_author, Date date_submitted, String description, int type_id, byte receipt) {
+		super();
+		this.id = id;
+		this.status = status;
+		this.amount = amount;
+		this.user_fkey_author = user_fkey_author;
+		this.date_submitted = date_submitted;
+		this.description = description;
+		this.type_id = type_id;
+		this.receipt = receipt;
+	}
     public Reimbursement(int id, Status status, User author, Date date_submitted, double amount, String description) {
     	super();
     	
@@ -151,10 +180,32 @@ public class Reimbursement extends AbstractReimbursement {
  	
 	public void setUserFkeyResolved(int user_fkey_resolved) {
 		this.user_fkey_resolved = user_fkey_resolved;
+	}	
+	
+	public byte getReceipt() {
+		return receipt;
 	}
 
-	
-	
+	public void setReceipt(byte receipt) {
+		this.receipt = receipt;
+	}
+
+	public int getType_id() {
+		return type_id;
+	}
+
+	public void setType_id(int type_id) {
+		this.type_id = type_id;
+	}
+
+	public int getUser_fkey_author() {
+		return user_fkey_author;
+	}
+
+	public void setUser_fkey_author(int user_fkey_author) {
+		this.user_fkey_author = user_fkey_author;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -236,7 +287,8 @@ public class Reimbursement extends AbstractReimbursement {
 				+ (date_resolved != null ? "date_resolved=" + date_resolved + ", " : "")
 				+ (description != null ? "description=" + description + ", " : "")
 				+ (type != null ? "type=" + type + ", " : "") + "status_fkey=" + status_fkey + ", user_fkey_resolved="
-				+ user_fkey_resolved + "]";
+				+ user_fkey_resolved + ", receipt=" + receipt + ", type_id=" + type_id + ", user_fkey_author="
+				+ user_fkey_author + "]";
 	}
 
 

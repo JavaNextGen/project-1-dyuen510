@@ -275,8 +275,10 @@ public class UserDAO {
     			loggedUser.setL_name(rs.getString("l_name"));
     			loggedUser.setEmail(rs.getString("email"));
     			
+    			System.out.println(rs.getString("user_role"));
+    			System.out.println("hello world");
     			//verifying if employee or finance manager here
-    			if(rs.getString("user_role") == "Employee") {
+    			if(rs.getString("user_role").equals("Employee")) {
     				role = Role.EMPLOYEE;
     				loggedUser.setRole(role);
     			}else {

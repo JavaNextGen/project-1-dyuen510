@@ -258,26 +258,7 @@ public class ReimbursementDAO {
     	
     	//Basically I just need to insert to the reimbursement table by selecting the reimbursement_id and updating 
     		// status_fkey, user_fkey_resolved, and date_resolved
-    	
-    	//Attempting to use mutliple queries with 
-    		
-//    		----> doesn't work with two? 
-//    		ResultSet rs = null;
-//    		String sql2 = "SELECT * FROM curr_users WHERE username = ?";
-//    		PreparedStatement ds = conn.prepareStatement(sql2);
-//    		ds.setString(1, resolver.getUsername());
-//    		ds.executeQuery();
-//    		while(rs.next()) {
-//    			rs.getString("f_name");
-//    		}
-//    	
-//    		-----> end here 
-    		
-    		//TEsting getByUSername instead*************************************************
-    		
-//    		something else
-//    		List<User> currentUser = new ArrayList<>();
-//    		int resolve_key = 0;
+    		Reimbursement reimObject = new Reimbursement();
 
     		String sql = "UPDATE reimbursements SET status_fkey = ?, user_fkey_resolved = ?, date_resolved = ? WHERE reimbursement_id = ?";
     		try (PreparedStatement ps = conn.prepareStatement(sql)){
@@ -296,67 +277,66 @@ public class ReimbursementDAO {
     			System.out.println(unprocessedReimbursement.getUserFkeyResolved());
     			System.out.println(date_resolved);
     			
+    			int reimId = unprocessedReimbursement.getId();
+    			
+    			reimObject = new Reimbursement(
+    	    			reimId,
+    	    			finalStatus,
+    	    			resolver,
+    	    			date_resolved,
+    	    			unprocessedReimbursement.getStatusFkey(),
+    	    			unprocessedReimbursement.getUserFkeyResolved()
+    					);
+    			
+    			System.out.println(reimObject);
+    			return reimObject;
+    			
+    			
     		}catch(SQLException e) {
     			System.out.println("something went wrong");
     			e.printStackTrace();
     		}
     		
     		
-//    		String sql2 = "SELECT * FROM reimbursements WHERE reimbursement_id = ?";
-//    		try (PreparedStatement ps = conn.prepareStatement(sql2)){
-//    			ps.setInt(1, unprocessedReimbursement.getId());
-//    			rs = ps.executeQuery();
-//    			
-//    		}catch(SQLException e) {
-//    			System.out.println("yikes");
-//    			e.printStackTrace();
-//    		}
     	}catch(SQLException e) {
     		System.out.println("yikes");
     		e.printStackTrace();
     		
     	}
-    return null;
+    return unprocessedReimbursement;
     }
-//    		String sql = "UPDATE reimbursements SET status_fkey = ?, user_fkey_resolved = ?, date_resolved = ? WHERE reimbursement_id = ?";
-//
-//    		PreparedStatement ps = conn.prepareStatement(sql);
-//    		// can declare these variables in the menu and have for loop to get the ints, not sure about the userfkeyresolved though.
-//    		//also need a if statement to check if the reimbursement belongs to the same user resolving
-//    		
-//    		// i can have if statements to convert the string inputs to numbers so that I can explicitly update the values on db so no need
-//    		// for select with update statements I assume. Not sure about the user_fkey_resolved b/c might need to grab the int?
-//    		System.out.println(unprocessedReimbursement.getStatusFkey());
-//    		ps.setInt(1, unprocessedReimbursement.getStatusFkey());
-//    		ps.setInt(2, unprocessedReimbursement.getUserFkeyResolved()); 
-//    		ps.setDate(3, unprocessedReimbursement.getDate_resolved()); //Date at the menu or automatically set a date when user submits?
-//    		ps.setInt(4, unprocessedReimbursement.getId());
-////    		System.out.println(unprocessedReimbursement);
-//    		System.out.println(unprocessedReimbursement.getId());
-//    		System.out.println(unprocessedReimbursement.getId());
-//    		System.out.println(unprocessedReimbursement);
-//    		System.out.println(finalStatus);
-//    		System.out.println(resolver);
-//    		System.out.println(unprocessedReimbursement.getId());
-//    		System.out.println(unprocessedReimbursement.getId());
-//    		
-//    		ps.executeUpdate();
-//    		//if statements for status.
-//    		if(unprocessedReimbursement.getStatusFkey() == 2){
-//    			statusOutcome = "Approved";
-//    		}else if(unprocessedReimbursement.getStatusFkey() == 3) {
-//    			statusOutcome = "Denied";
-//    		}
-//    		
-//    		System.out.println("Successfully " + statusOutcome + " reimbursement ticket " + unprocessedReimbursement.getId());
-//    	}catch(SQLException e){
-//    		System.out.println("Update Error");
-//    		e.printStackTrace();
-//    	}
-//    	return unprocessedReimbursement;
-//    }
-    
-    public PreparedStatement setLocalDate(int index, final LocalDate value) {
-    	return setLocalDate(index, value);
-    };
+
+
+ // ############################################# Submit NEW Reimbursement #################################################################
+	public void submitReimbursement(Reimbursement newReimbursement, User Author) {
+		// TODO Auto-generated method stub
+		
+		//not sure if receipt bytea is needed.
+		try(Connection conn = ConnectionFactory.getConnection()){
+			String sql = "INSERT INTO reimbursements (amount, date_submitted, description, receipt, "
+					+ "user_fkey_auth, type_fkey, status_fkey)"
+					+ "VALUES(?, ?, ?, ?, ?, ?, 1)";
+			
+			try(PreparedStatement ps = conn.prepareStatement(sql)){
+				
+				ps.setDouble(1, newReimbursement.getAmount());
+				ps.setDate(2, newReimbursement.getDate_submitted());
+				ps.setString(3, newReimbursement.getDescription());
+				ps.setByte(4, newReimbursement.getReceipt());
+				ps.setInt(5, newReimbursement.getUser_fkey_author());
+				ps.setInt(6, newReimbursement.getType_id());
+				
+				ps.executeUpdate();
+				
+				System.out.println("Reimbursement ID " + newReimbursement.getId() + " in the amount of " + newReimbursement.getAmount() + 
+						" has been submitted successfully." );
+				
+			}catch(SQLException e) {
+				System.out.println("error");
+			}
+		}catch(SQLException e) {
+			System.out.println("error in adding new reimbursement");
+			e.printStackTrace();
+		}
+	};
 }

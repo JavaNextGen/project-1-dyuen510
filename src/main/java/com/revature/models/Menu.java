@@ -137,10 +137,6 @@ public class Menu {
         resolver.setL_name(preResolve.get().getL_name());
         System.out.println(resolver);
         
-        Role enumRole = null;
-//        LocalDate date_resolved = new localDate.now();
-//        Date date_resolved = null;
-//        LocalDate date_resolved = LocalDate.now();
         Date date_resolved = null;
         System.out.println(id);
         System.out.println(id);

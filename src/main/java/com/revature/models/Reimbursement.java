@@ -28,7 +28,7 @@ public class Reimbursement extends AbstractReimbursement {
 	private String type;
 	private int status_fkey;
 	private int user_fkey_resolved;
-	private byte receipt;
+	private byte[] receipt;
 	private int type_id;
 	private int user_fkey_author;
 	
@@ -37,7 +37,17 @@ public class Reimbursement extends AbstractReimbursement {
      * This includes the minimum parameters needed for the {@link com.revature.models.AbstractReimbursement} class.
      * If other fields are needed, please create additional constructors.
      */
-    
+	public Reimbursement(int id, int user_fkey_author, double amount, Date date_submitted, Date date_resolved, byte[] receipt, Status status) {
+		// TODO Auto-generated constructor stub
+		super();
+		this.id = id;
+		this.user_fkey_author = user_fkey_author;
+		this.amount = amount;
+		this.date_submitted = date_submitted;
+		this.date_resolved = date_resolved;
+		this.receipt = receipt;
+		this.status = status;
+	}
 	public Reimbursement() {
 		super();
 	};
@@ -93,10 +103,10 @@ public class Reimbursement extends AbstractReimbursement {
 
 	//method overloading changing the parameters; this one is for user when they submit request
 	
-	public Reimbursement(int id, Status status, double amount, int user_fkey_author, Date date_submitted, String description, int type_id, byte receipt) {
+	public Reimbursement(int id, int status_fkey, double amount, int user_fkey_author, Date date_submitted, String description, int type_id, byte[] receipt) {
 		super();
 		this.id = id;
-		this.status = status;
+		this.status_fkey = status_fkey;
 		this.amount = amount;
 		this.user_fkey_author = user_fkey_author;
 		this.date_submitted = date_submitted;
@@ -104,7 +114,15 @@ public class Reimbursement extends AbstractReimbursement {
 		this.type_id = type_id;
 		this.receipt = receipt;
 	}
-    public Reimbursement(int id, Status status, User author, Date date_submitted, double amount, String description) {
+    public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	public Reimbursement(int id, Status status, User author, Date date_submitted, double amount, String description) {
     	super();
     	
     	
@@ -133,6 +151,8 @@ public class Reimbursement extends AbstractReimbursement {
     	this.status = status;
     	this.amount = amount;
 	}
+
+
 
 	public User getResolver() {
  		return resolver;
@@ -182,11 +202,11 @@ public class Reimbursement extends AbstractReimbursement {
 		this.user_fkey_resolved = user_fkey_resolved;
 	}	
 	
-	public byte getReceipt() {
+	public byte[] getReceipt() {
 		return receipt;
 	}
 
-	public void setReceipt(byte receipt) {
+	public void setReceipt(byte[] receipt) {
 		this.receipt = receipt;
 	}
 

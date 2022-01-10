@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Scanner;
 
 import com.revature.repositories.ReimbursementDAO;
@@ -26,7 +27,6 @@ public class Menu {
 	AuthService as = new AuthService();
 	UserService us = new UserService();
 	Scanner scan = new Scanner(System.in);
-	
 	Role role;
 	
 //	Role Role; might need not sure yet
@@ -98,10 +98,17 @@ public class Menu {
     		// newUser.getUsername(); etc......
     	System.out.println("hello world");
     	uDAO.verifyUser(username, password);
-    	
-    	
+    	 Optional<User> preResolve = uDAO.getByUsername(username);
+//    	#####################################TESTING RETRIEVE PAST RECORDS BY USER_ID###################################
+    	System.out.println("What would you like to do today?");
+    	System.out.println("Viewing past records");
+    	int userId = preResolve.get().getId();
+    	System.out.println(userId);
+    	rDAO.getPastReimbursements(userId);
+    	//###################################TESTING SUBMIT#############################################################
+    	submitReimburse(username);
     	//###################################TESTING UPDATE#############################################################
-    	System.out.println("testing update a reimbursement ticket?");
+    	System.out.println("update a reimbursement ticket?");
     	System.out.println("enter ticket ID");
         int id = scan.nextInt();
         System.out.println(id);
@@ -121,7 +128,7 @@ public class Menu {
         }
         
         //adding the getByUsername here to grab the data from curr_user table
-        Optional<User> preResolve = uDAO.getByUsername(username);
+//        Optional<User> preResolve = uDAO.getByUsername(username);
 //        User resolve = new User();
         System.out.println(preResolve);
         System.out.println();
@@ -136,6 +143,7 @@ public class Menu {
         resolver.setF_name(preResolve.get().getF_name());
         resolver.setL_name(preResolve.get().getL_name());
         System.out.println(resolver);
+        
         
         Date date_resolved = null;
         System.out.println(id);
@@ -186,8 +194,42 @@ public class Menu {
     	
     }
     
-    public void Reimburse() {
-    	rDAO.getByStatus(status);
+    public void submitReimburse(String username) {
+//    	rDAO.getByStatus(status);
+//    	Scanner scan = new Scanner(System.in);
+    	System.out.println("******************#Submit a New Reimbursement****************************");
+    	System.out.println("Choose Reimbursement Type");
+    	System.out.println("1 -> Lodging");
+    	System.out.println("2 -> Travel");
+    	System.out.println("3 -> Food");
+    	System.out.println("4 -> Other");
+    	int reimType = scan.nextInt();
+    	scan.nextLine();
+    	System.out.println("Enter amount");
+    	double amount = scan.nextDouble();
+    	scan.nextLine();
+    	System.out.println("Enter a brief description");
+    	String description = scan.nextLine(); 
+    	//BYTE RECEIPT
+    	Random rd = new Random();
+    	byte[] receipt = new byte[7];
+    	rd.nextBytes(receipt);
+    	System.out.println(receipt); //testing
+    	LocalDate localD = LocalDate.now();
+		java.sql.Date date_submit = java.sql.Date.valueOf(localD);
+    	//getting the auth_id
+    	
+    	Optional<User> grabAuthId = uDAO.getByUsername(username);
+    	int authId = grabAuthId.get().getId();
+    	
+//    	System.out.println(grabAuthId);
+    	
+//    	int id, Status status, double amount, int user_fkey_author, Date date_submitted, String description, int type_id, byte receipt
+    	Reimbursement newReimbursement = new Reimbursement(0, 1, amount, authId, date_submit, description, reimType, receipt);
+    	
+    	rs.addReimbursement(newReimbursement);
+    	System.out.println(newReimbursement);
+    	
     }
     
     //create new user method that I will place in the if statement

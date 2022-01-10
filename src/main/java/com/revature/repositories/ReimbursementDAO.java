@@ -308,7 +308,7 @@ public class ReimbursementDAO {
 
 
  // ############################################# Submit NEW Reimbursement #################################################################
-	public void submitReimbursement(Reimbursement newReimbursement, User Author) {
+	public void submitReimbursement(Reimbursement newReimbursement) {
 		// TODO Auto-generated method stub
 		
 		//not sure if receipt bytea is needed.
@@ -322,21 +322,83 @@ public class ReimbursementDAO {
 				ps.setDouble(1, newReimbursement.getAmount());
 				ps.setDate(2, newReimbursement.getDate_submitted());
 				ps.setString(3, newReimbursement.getDescription());
-				ps.setByte(4, newReimbursement.getReceipt());
+				ps.setBytes(4, newReimbursement.getReceipt());
 				ps.setInt(5, newReimbursement.getUser_fkey_author());
 				ps.setInt(6, newReimbursement.getType_id());
 				
 				ps.executeUpdate();
-				
-				System.out.println("Reimbursement ID " + newReimbursement.getId() + " in the amount of " + newReimbursement.getAmount() + 
+				System.out.println(newReimbursement);
+				System.out.println("Reimbursement ID " + newReimbursement.getDescription() + " in the amount of " + newReimbursement.getAmount() + 
 						" has been submitted successfully." );
 				
 			}catch(SQLException e) {
 				System.out.println("error");
+				e.printStackTrace();
 			}
 		}catch(SQLException e) {
 			System.out.println("error in adding new reimbursement");
 			e.printStackTrace();
 		}
-	};
+	}
+		//######################################## VIEW PAST TICKETS ##################################################################
+		public List<Reimbursement> getPastReimbursements(int id) {
+			try(Connection conn = ConnectionFactory.getConnection()){
+				
+				ResultSet rs = null;
+				String sql = "SELECT reimbursement_id, user_fkey_auth, amount, date_submitted,"
+						+ " date_resolved, receipt, curr_status"
+						+ " FROM  reimbursements"
+						+ " LEFT JOIN status"
+						+ " ON status.status_id = status_fkey"
+						+ " WHERE user_fkey_auth = ?";
+			
+				List <Reimbursement> viewReimList = new ArrayList<>();
+				try(PreparedStatement ps = conn.prepareStatement(sql)){
+					ps.setInt(1, id);
+					ps.executeQuery();
+					rs = ps.executeQuery();
+					
+					
+					while(rs.next()) {
+						System.out.println(rs.getBytes("receipt"));
+						System.out.println("hello");
+						Status currStatus = null;
+						if(rs.getString("curr_status").equals("Pending")) {
+							currStatus = Status.PENDING;
+						}else if(rs.getString("curr_status").equals("Approved")) {
+							currStatus = Status.APPROVED;
+						}else if(rs.getString("curr_status").equals("Denied")){
+							currStatus = Status.DENIED;
+						}
+						System.out.println(currStatus);
+						
+						//didn't include status_fkey nor resolver but I think that's fine?
+						Reimbursement r = new Reimbursement(
+								rs.getInt("reimbursement_id"),
+								rs.getInt("user_fkey_auth"),
+								rs.getDouble("amount"),
+								rs.getDate("date_submitted"),
+								rs.getDate("date_resolved"),
+								rs.getBytes("receipt"),
+								currStatus
+								);
+						
+						viewReimList.add(r);
+						
+						System.out.println(viewReimList);
+						
+								
+					}
+					return viewReimList;
+					
+				}catch(SQLException e) {
+					System.out.println("Retrieve information Failed");
+					e.printStackTrace();
+				}
+			}catch(SQLException e) {
+				System.out.println("Error occurred while retreiving records");
+				e.printStackTrace();
+			}
+			return Collections.emptyList();
+		};
 }

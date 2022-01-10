@@ -56,4 +56,23 @@ public class ReimbursementController {
 			ctx.status(400);
 		}
 	};
+	
+	public Handler getPastReimbursementsHandler = (ctx) -> {
+		if(ctx.req.getSession() != null) {
+			
+			int id = Integer.parseInt(ctx.pathParam("user_id"));
+			
+			List<Reimbursement> viewById = rs.viewReimbursements(id);
+			
+			Gson gson = new Gson();
+			
+			String JSONPastReimbursements = gson.toJson(viewById);
+			
+			ctx.result(JSONPastReimbursements);
+			ctx.status(200);
+		} else {
+			ctx.result("failed");
+			ctx.status(400);
+		}
+	};
 }

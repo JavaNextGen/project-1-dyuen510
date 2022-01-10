@@ -71,4 +71,18 @@ public class ReimbursementService {
 		
 		return reimburse;
 	}
+	
+	// Add a Reimbursement
+	public void addReimbursement(Reimbursement newReimbursement) {
+		
+		rDAO.submitReimbursement(newReimbursement);
+	}
+	
+	// VIEW PAST TICKETS WITH USERID
+	public List<Reimbursement> viewReimbursements(int id) {
+		
+		List<Reimbursement> reimbursementList = rDAO.getPastReimbursements(id);
+		
+		return reimbursementList;
+	}
 }

@@ -26,17 +26,18 @@ public class Driver {
     	
     	//implement Javalin
     	
-//    	Javalin app = Javalin.create(
-//    			//CORS
-//    				config -> {
-//    					config.enableCorsForAllOrigins();
-//    				}
-//    			).start(3000);
-//    	
-//    	
-//    	app.get("/username/{username}", uc.getByUsernameHandler);
-//    	app.get("/reimbursements/{status}", rc.getByStatusHandler);
-//    	app.get("/getById/{reimbursement_id}", rc.getByIntHandler);
+    	Javalin app = Javalin.create(
+    			//CORS
+    				config -> {
+    					config.enableCorsForAllOrigins();
+    				}
+    			).start(3000);
+    	
+    	
+    	app.get("/username/{username}", uc.getByUsernameHandler);
+    	app.get("/reimbursements/{status}", rc.getByStatusHandler);
+    	app.get("/getById/{reimbursement_id}", rc.getByIntHandler);
+    	app.get("/reimbursements/history/{user_id}", rc.getPastReimbursementsHandler);
     Menu menu = new Menu();
     menu.displayMenu();
     

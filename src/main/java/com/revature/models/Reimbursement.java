@@ -93,13 +93,6 @@ public class Reimbursement extends AbstractReimbursement {
         this.resolver = resolver;
     }
   
-    public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	//method overloading changing the parameters; this one is for user when they submit request
 	
@@ -113,13 +106,6 @@ public class Reimbursement extends AbstractReimbursement {
 		this.description = description;
 		this.type_id = type_id;
 		this.receipt = receipt;
-	}
-    public double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(double amount) {
-		this.amount = amount;
 	}
 
 	public Reimbursement(int id, Status status, User author, Date date_submitted, double amount, String description) {
@@ -153,7 +139,23 @@ public class Reimbursement extends AbstractReimbursement {
 	}
 
 
+    public int getId() {
+		return id;
+	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+    public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	
 	public User getResolver() {
  		return resolver;
  	}

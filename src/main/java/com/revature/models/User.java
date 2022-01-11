@@ -19,6 +19,7 @@ public class User extends AbstractUser {
 	private String f_name;
 	private String l_name;
 	private String email;
+	private int user_role_fkey;
 	
 	
 	
@@ -33,6 +34,22 @@ public class User extends AbstractUser {
 		this.l_name = l_name;
 	}
 	
+	public User(int id, String f_name, String l_name, String email, int user_role_fkey) {
+		super(id);
+		this.f_name = f_name;
+		this.l_name = l_name;
+		this.email = email;
+		this.user_role_fkey = user_role_fkey;
+	}
+	
+	public User(int id, String username, String password, Role role, String f_name, String l_name, String email, int user_role_fkey) {
+		super(id, username, password, role);
+		this.f_name = f_name;
+		this.l_name = l_name;
+		this.email = email;
+		this.user_role_fkey = user_role_fkey;
+	}
+
 	//need to see how to get the Role since the data type is int in db, but String? on DML?
     public User(int id, String username, String password, Role role, String f_name, String l_name, String email) {
 		super(id, username, password, role);
@@ -52,30 +69,12 @@ public class User extends AbstractUser {
     	super();
 	}
 
-	/**
-     * This includes the minimum parameters needed for the {@link com.revature.models.AbstractUser} class.
-     * If other fields are needed, please create additional constructors.
-     */
-   
-    
-
-	//created a new constructor for the f_name, l_name and email.
-//    public User(String f_name, String l_name, String email) {
-//    	super(); // study on super()
-//    	this.f_name = f_name;
-//    	this.l_name = l_name;
-//    	this.email = email;
-//    	
-//    	
-//    }
-    
-    //returns our public employee information as a string, have to see if the abstract return is returned also
-    //if not might have to add it here? 
-    @Override
-    public String toString() {
-    	return "first name: " + f_name + " last name: " + l_name + " email: " + email + " password: " + getPassword()
-    	+ " username: " + getUsername() + " role " + getRole();
-    }
+	@Override
+	public String toString() {
+		return "User [" + (f_name != null ? "f_name=" + f_name + ", " : "")
+				+ (l_name != null ? "l_name=" + l_name + ", " : "") + (email != null ? "email=" + email + ", " : "")
+				+ "user_role_fkey=" + user_role_fkey + "]";
+	}
     
     //Getter and setter methods to access and change private variables above 
     //first Name
@@ -104,6 +103,14 @@ public class User extends AbstractUser {
     public void setEmail(String email) {
     	this.email = email;
     }
+
+	public int getUserRoleFkey() {
+		return user_role_fkey;
+	}
+
+	public void setUserRoleFkey(int user_role_fkey) {
+		this.user_role_fkey = user_role_fkey;
+	}
     
 
     

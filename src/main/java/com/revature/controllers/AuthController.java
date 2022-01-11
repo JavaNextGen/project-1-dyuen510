@@ -1,10 +1,13 @@
 package com.revature.controllers;
 
 import com.google.gson.Gson;
+import com.revature.models.LoginDTO;
 import com.revature.models.User;
 import com.revature.services.AuthService;
 
 import io.javalin.http.Handler;
+import javax.servlet.http.HttpSession;
+import org.eclipse.jetty.server.session.Session;
 
 public class AuthController {
 
@@ -27,5 +30,25 @@ public class AuthController {
 			ctx.status(400);
 		}
 
+	};
+	
+	public Handler loginHandler = (ctx) -> {
+		String body = ctx.body();
+		
+		Gson gson = new Gson();
+		
+		LoginDTO LDTO = gson.fromJson(body, LoginDTO.class);
+		
+		if(as.login(LDTO.getUsername(), LDTO.getPassword())) {
+			ctx.req.getSession();
+			
+			ctx.res.setHeader("Set-Cookie", "key=value; HttpOnly; SameSite=None; Secure");
+			
+			ctx.status(202);
+			ctx.result("Login Success");
+		} else {
+			ctx.status(401);
+			ctx.result("Login Failed!");
+		}
 	};
 }

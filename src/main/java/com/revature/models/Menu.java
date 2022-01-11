@@ -97,6 +97,7 @@ public class Menu {
     		// User newUser = ctx.cookieStore<User>("newUser")
     		// newUser.getUsername(); etc......
     	System.out.println("hello world");
+    	as.login(username, password);
     	uDAO.verifyUser(username, password);
     	 Optional<User> preResolve = uDAO.getByUsername(username);
 //    	#####################################TESTING RETRIEVE PAST RECORDS BY USER_ID###################################
@@ -254,18 +255,19 @@ public class Menu {
     	System.out.println("1 => Employee");
     	System.out.println("2 => Finance Manageer"); // might need to add additional to finance manager 
     	String roleId = scan.nextLine();
-    	
+    	int roleFkey = 1;
 //    	switch case to see if user typed in employee or finance manager
 //    	need to figure out a way to convert it to a int foreign key since db has roles in separate table 
     	switch(roleId) {
     	case "1" : 
-    		
 //    		System.out.println(Role.EMPLOYEE);
     		role = Role.EMPLOYEE;
+    		roleFkey = 1;
     		break;
     	case "2" : 
 //    		System.out.println(Role.FINANCE_MANAGER);
     		role = Role.FINANCE_MANAGER;
+    		roleFkey =2;
     		//if statement for them to input a code that we can do == operator 
     		//if correct then continue if not create account fail
     		break;
@@ -292,7 +294,7 @@ public class Menu {
     	
   
 		//at the moment only works for first and last name plus email // testing
-    	User newUser = new User( 0, username, password, role, f_name, l_name, email);
+    	User newUser = new User( 1, username, password, role, f_name, l_name, email, roleFkey);
 //    	AbstractUser newUser = new AbstractUser(username, password, email, role);
     	
     	as.register(newUser);

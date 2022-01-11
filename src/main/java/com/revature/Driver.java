@@ -3,6 +3,7 @@ package com.revature;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import com.revature.controllers.AuthController;
 import com.revature.controllers.ReimbursementController;
 import com.revature.controllers.UserController;
 import com.revature.models.Menu;
@@ -16,6 +17,8 @@ public class Driver {
     	
     	UserController uc = new UserController();
     	ReimbursementController rc = new ReimbursementController();
+    	AuthController ac = new AuthController();
+    	
     	//testing Database Connectivity from ConnectionFactory is successful
     	try(Connection conn = ConnectionFactory.getConnection()){
     		System.out.println("Connection Successful!");
@@ -33,10 +36,15 @@ public class Driver {
     				}
     			).start(3000);
     	
-    	
+    	app.get("/users", uc.getUsersHandler);
     	app.get("/username/{username}", uc.getByUsernameHandler);
-    	app.get("/reimbursements/{status}", rc.getByStatusHandler);
-    	app.get("/getById/{reimbursement_id}", rc.getByIntHandler);
+    	app.post("/username", ac.registerNewUser);
+    	app.post("/login", ac.loginHandler);
+    	app.post("/reimbursement", rc.submitReimbursementHandler);
+    	// I still need :
+    	// app.put update reimbursement
+    	app.get("/reimbursementsByStatus/{status}", rc.getByStatusHandler);
+    	app.get("/reimbursementById/{reimbursement_id}", rc.getByIntHandler);
     	app.get("/reimbursements/history/{user_id}", rc.getPastReimbursementsHandler);
     Menu menu = new Menu();
     menu.displayMenu();

@@ -25,9 +25,14 @@ public class AbstractUser {
     private String username;
     private String password;
     private Role role;
-
+    
     public AbstractUser() {
         super();
+    }
+    
+    public AbstractUser(int id) {
+    	super();
+    	this.id = id;
     }
     
     public AbstractUser(int id, String username, String password, Role role) {

@@ -35,23 +35,37 @@ public class AuthService {
      */
 	
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
-    public User login(String username, String password) {
+    public boolean login(String username, String password) {
     	//might need a statement to select queries to database and check if it's equal
     	//instead of uDAO.create is there another uDAO method that lets us communicate with db?
     	//somehow put this java logic into the menu.java with the Login() method...
     	// probably best to use an if statement
-    	uDAO.verifyUser(username, password);
-
-        return null;
+//    	System.out.println("#######################################################");
+    	String dbUsername = uDAO.verifyUser(username, password).getUsername();
+    	String dbPassword = uDAO.verifyUser(username, password).getPassword();
+    	//also verify Role here
+    	if(username.equals(dbUsername) && password.equals(dbPassword)) { //doesn't work b/c same data
+    		System.out.println("1");
+    		System.out.println("here one");
+    		System.out.println(dbPassword);
+    		System.out.println(password);
+    		return true;
+    	}else {
+    		System.out.println("2");
+    		System.out.println("here two");
+    		return false;
+    	}
+    	
+    	
     }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	public User Login(User userToBeLoggedIn) {
-		
-		uDAO.login(userToBeLoggedIn);
-		
-		return userToBeLoggedIn;
-	}
+//	public User Login(User userToBeLoggedIn) {
+//		
+//		uDAO.login(userToBeLoggedIn);
+//		
+//		return userToBeLoggedIn;
+//	}
     /**
      * <ul>
      *     <li>Should ensure that the username/email provided is unique.</li>
@@ -70,7 +84,7 @@ public class AuthService {
     	// try and catch block with the UserNameNotUniqueException 
     	
     	uDAO.create(userToBeRegistered);
-    	
+    	System.out.println(userToBeRegistered);
         return userToBeRegistered;
     }
 

@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.revature.models.User;
@@ -26,6 +27,15 @@ public class UserService {
 	/**
 	 *     Should retrieve a User with the corresponding username or an empty optional if there is no match.
      */
+	// get by data by username
+	
+	public List<User> getUsers() {
+		
+		List<User> users = uDAO.getUsers();
+		
+		return users;
+	}
+	
 	public Optional<User> getByUsername(String username) {
 		
 		Optional<User> userDetails = uDAO.getByUsername(username);

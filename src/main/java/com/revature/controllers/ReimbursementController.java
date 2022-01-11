@@ -7,6 +7,7 @@ import com.revature.services.ReimbursementService;
 import com.google.gson.Gson;
 import com.revature.models.Reimbursement;
 import com.revature.models.Status;
+import com.revature.models.User;
 
 import io.javalin.http.Handler;
 
@@ -75,4 +76,44 @@ public class ReimbursementController {
 			ctx.status(400);
 		}
 	};
+	
+	// add reimbursement
+	public Handler submitReimbursementHandler = (ctx) -> {
+		if(ctx.req.getSession() != null) {
+			String body = ctx.body();
+			
+			Gson gson = new Gson();
+			
+			Reimbursement submitReimbursement = gson.fromJson(body, Reimbursement.class);
+			
+			rs.addReimbursement(submitReimbursement);
+			
+			ctx.result("user successfully added!");
+			ctx.status(200);
+		} else {
+			ctx.result("failed to insert user");
+			ctx.status(400);
+		}
+		};
+		
+	public Handler updateReimbursementHandler = (ctx) -> {
+		if(ctx.req.getSession() != null) {
+			
+			String body = ctx.body();
+			Gson gson = new Gson();
+			
+			Reimbursement updateReimbursement = gson.fromJson(body, Reimbursement.class);
+			
+//			rs.process(updateReimbursement, finalStatus, resolver);
+			
+			
+			ctx.result("Successfully updated.");
+			ctx.status(200);
+			
+		} else {
+			ctx.result("Error in updating");
+			ctx.status(400);
+		}
+	};
+	
 }

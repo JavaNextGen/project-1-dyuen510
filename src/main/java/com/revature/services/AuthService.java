@@ -41,20 +41,33 @@ public class AuthService {
     	//somehow put this java logic into the menu.java with the Login() method...
     	// probably best to use an if statement
 //    	System.out.println("#######################################################");
-    	String dbUsername = uDAO.verifyUser(username, password).getUsername();
-    	String dbPassword = uDAO.verifyUser(username, password).getPassword();
-    	//also verify Role here
-    	if(username.equals(dbUsername) && password.equals(dbPassword)) { //doesn't work b/c same data
-    		System.out.println("1");
-    		System.out.println("here one");
-    		System.out.println(dbPassword);
-    		System.out.println(password);
+//    	String dbUsername = uDAO.verifyUser(username, password).getUsername();
+//    	String dbPassword = uDAO.verifyUser(username, password).getPassword();
+//    	//also verify Role here
+//    	if(username.equals(dbUsername) && password.equals(dbPassword)) { //doesn't work b/c same data
+//    		System.out.println("1");
+//    		System.out.println("here one");
+//    		System.out.println(dbPassword);
+//    		System.out.println(password);
+//    		return true;
+//    	}else {
+//    		System.out.println("2");
+//    		System.out.println("here two");
+//    		return false;
+//    	}
+    	
+    	/* NOTE : validate username/password against some username/password in the DB
+    			  need to use the DAO method that uses those for matching values in the DB
+    			  need DAO method like:
+    			  	"select * from users where username = ? and password = ? and then insert the values of the DTO for parameters
+    			  	
+    	*/
+    	// TESTING
+    	if(username.equals("david") && password.equals("password")) {
     		return true;
-    	}else {
-    		System.out.println("2");
-    		System.out.println("here two");
-    		return false;
     	}
+    	
+    	return false;
     	
     	
     }

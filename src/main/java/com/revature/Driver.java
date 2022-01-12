@@ -43,6 +43,7 @@ public class Driver {
     	app.post("/reimbursement", rc.submitReimbursementHandler);
     	// I still need :
     	// app.put update reimbursement
+    	app.put("/reimbursement", rc.updateReimbursementHandler );
     	app.get("/reimbursementsByStatus/{status}", rc.getByStatusHandler);
     	app.get("/reimbursementById/{reimbursement_id}", rc.getByIntHandler);
     	app.get("/reimbursements/history/{user_id}", rc.getPastReimbursementsHandler);

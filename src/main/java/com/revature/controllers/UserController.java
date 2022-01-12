@@ -15,7 +15,7 @@ public class UserController {
 	UserService us = new UserService();
 	
 	public Handler getByUsernameHandler = (ctx) -> {
-		if(ctx.req.getSession() != null) {
+		if(ctx.req.getSession(true) != null) {
 			
 			String username = ctx.pathParam("username");
 			
@@ -29,12 +29,12 @@ public class UserController {
 			ctx.status(200);
 		}else {
 			ctx.result("oh no something went wrong again...");
-			ctx.status(200);
+			ctx.status(401);
 		}
 	};
 	
 	public Handler getUsersHandler = (ctx) -> {
-		if(ctx.req.getSession() != null) {
+		if(ctx.req.getSession(true) != null) {
 			
 			List<User> allUsers = us.getUsers();
 			

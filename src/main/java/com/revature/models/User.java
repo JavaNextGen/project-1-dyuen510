@@ -69,13 +69,13 @@ public class User extends AbstractUser {
     	super();
 	}
 
-	@Override
-	public String toString() {
-		return "User [" + (f_name != null ? "f_name=" + f_name + ", " : "")
-				+ (l_name != null ? "l_name=" + l_name + ", " : "") + (email != null ? "email=" + email + ", " : "")
-				+ "user_role_fkey=" + user_role_fkey + "]";
-	}
-    
+//	@Override
+//	public String toString() {
+//		return "User [" + (f_name != null ? "f_name=" + f_name + ", " : "")
+//				+ (l_name != null ? "l_name=" + l_name + ", " : "") + (email != null ? "email=" + email + ", " : "")
+//				+ "user_role_fkey=" + user_role_fkey + "]";
+//	}
+//    
     //Getter and setter methods to access and change private variables above 
     //first Name
     public String getF_name() {
@@ -110,6 +110,18 @@ public class User extends AbstractUser {
 
 	public void setUserRoleFkey(int user_role_fkey) {
 		this.user_role_fkey = user_role_fkey;
+	}
+
+	@Override
+	public String toString() {
+		return "User [" + (f_name != null ? "f_name=" + f_name + ", " : "")
+				+ (l_name != null ? "l_name=" + l_name + ", " : "") + (email != null ? "email=" + email + ", " : "")
+				+ "user_role_fkey=" + user_role_fkey + ", getId()=" + getId() + ", "
+				+ (getUsername() != null ? "getUsername()=" + getUsername() + ", " : "")
+				+ (getPassword() != null ? "getPassword()=" + getPassword() + ", " : "")
+				+ (getRole() != null ? "getRole()=" + getRole() + ", " : "") + "hashCode()=" + hashCode() + ", "
+				+ (super.toString() != null ? "toString()=" + super.toString() + ", " : "")
+				+ (getClass() != null ? "getClass()=" + getClass() : "") + "]";
 	}
     
 

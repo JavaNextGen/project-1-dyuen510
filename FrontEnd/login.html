@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FullStack Project Frontend</title>
+    <title>FullStack Project</title>
 </head>
 <body>
     <div>
     <h3>Welcome. Please log in.</h3>
-    <input id='username' placeholder='Enter your username'/>
-    <input id='password' placeholder='Enter your password'/>
+    <input id='username' placeholder='Enter your username' required/>
+    <input id='password' placeholder='Enter your password' required/>
     <button id='loginButton'>Login</button>
     </div>
     <div>
         <button id='getUsersButton'>Show Users</button>
+    </div>
+
+    <div>
+        <h3>Sign Up</h3>
+        <button id='createButton' onclick='signUp()'>Sign Up</button>
     </div>
 
 

@@ -14,7 +14,7 @@ public class AuthController {
 	AuthService as = new AuthService();
 	
 	public Handler registerNewUser = (ctx) -> {
-		if(ctx.req.getSession() != null) {
+		if(ctx.req.getSession(true) != null) {
 			String body = ctx.body();
 			
 			Gson gson = new Gson();
@@ -40,6 +40,7 @@ public class AuthController {
 		LoginDTO LDTO = gson.fromJson(body, LoginDTO.class);
 		
 		if(as.login(LDTO.getUsername(), LDTO.getPassword())) {
+			
 			ctx.req.getSession();
 			
 			ctx.res.setHeader("Set-Cookie", "key=value; HttpOnly; SameSite=None; Secure");

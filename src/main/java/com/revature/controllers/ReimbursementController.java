@@ -17,7 +17,7 @@ public class ReimbursementController {
 	
 	
 	public Handler getByStatusHandler = (ctx) -> {
-		if(ctx.req.getSession(false) != null) {
+		if(ctx.req.getSession(true) != null) {
 			
 			String statusStr = ctx.pathParam("status");
 			
@@ -40,7 +40,7 @@ public class ReimbursementController {
 	};
 	
 	public Handler getByIntHandler = (ctx) -> {
-		if(ctx.req.getSession() != null) { //false getSession
+		if(ctx.req.getSession(true) != null) { //false getSession
 			
 			int reimbursement_id = Integer.parseInt(ctx.pathParam("reimbursement_id"));
 			
@@ -59,7 +59,7 @@ public class ReimbursementController {
 	};
 	
 	public Handler getPastReimbursementsHandler = (ctx) -> {
-		if(ctx.req.getSession() != null) {
+		if(ctx.req.getSession(true) != null) {
 			
 			int id = Integer.parseInt(ctx.pathParam("user_id"));
 			
@@ -79,7 +79,7 @@ public class ReimbursementController {
 	
 	// add reimbursement
 	public Handler submitReimbursementHandler = (ctx) -> {
-		if(ctx.req.getSession() != null) {
+		if(ctx.req.getSession(true) != null) {
 			String body = ctx.body();
 			
 			Gson gson = new Gson();
@@ -97,7 +97,7 @@ public class ReimbursementController {
 		};
 		
 	public Handler updateReimbursementHandler = (ctx) -> {
-		if(ctx.req.getSession() != null) {
+		if(ctx.req.getSession(true) != null) {
 			
 			String body = ctx.body();
 			Gson gson = new Gson();

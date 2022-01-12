@@ -23,6 +23,7 @@ public class AuthService {
 
 	
 	UserDAO uDAO = new UserDAO(); // to use the methods in UserDAO
+	UserService us = new UserService();
 	
     /**
      * <ul>
@@ -62,15 +63,41 @@ public class AuthService {
     			  	"select * from users where username = ? and password = ? and then insert the values of the DTO for parameters
     			  	
     	*/
-    	// TESTING
-    	if(username.equals("david") && password.equals("password")) {
-    		return true;
-    	}
+//    	us.getByUsername(username);
+//    	System.out.println(us.getByUsername(username).get());
+    	String dbUsername = us.getByUsername(username).get().getUsername();
+    	String dbPassword = us.getByUsername(dbUsername).get().getPassword();
+    	int dbRoleId = us.getByUsername(dbUsername).get().getUserRoleFkey();
+//    	System.out.println(username);
+//    	System.out.println(password);
     	
-    	return false;
-    	
-    	
+    		if(username.equals(dbUsername) && password.equals(dbPassword)) {
+//    			System.out.println("hello");
+    			System.out.println("Successfully logged in");
+    			return true;
+//    			if(dbRoleId == 1) {
+//    				//redirect to employee page
+//    				return 1;
+//    			}else if(dbRoleId == 2) {
+//    				//redirect to finance manager page
+//    				return 2;
+//    			}
+    		}else {
+    			System.out.println("incorrect values");
+    			return false;
+    		}
     }
+    
+    	
+    	// TESTING
+//    	if(username.equals("david") && password.equals("password")) {
+//    		return true;
+//    	}
+//    	
+//    	return false;
+    	
+    	
+    
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 //	public User Login(User userToBeLoggedIn) {

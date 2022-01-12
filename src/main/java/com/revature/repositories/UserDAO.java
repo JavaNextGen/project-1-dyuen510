@@ -37,6 +37,7 @@ public class UserDAO {
 				while(rs.next()) {
 					
 					User u = new User(
+							//User(int user_id, String f_name, String l_name, )
 							rs.getInt("user_id"),
 							rs.getString("f_name"),
 							rs.getString("l_name"),

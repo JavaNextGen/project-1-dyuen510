@@ -46,10 +46,10 @@ public class ReimbursementService {
      */
 	
 	//changed to void because we don't have to return anything?
-    public void process(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
+    public void process(Reimbursement unprocessedReimbursement) {
 //    	System.out.println("here");
 //    	System.out.println(statusId); //to simplify I can use an if statement here to convert the statusId to finalStatus maybe
-        rDAO.update(unprocessedReimbursement, finalStatus, resolver);
+        rDAO.update(unprocessedReimbursement);
     }
 
     /**

@@ -74,6 +74,7 @@ public class AbstractUser {
     public void setRole(Role role) {
         this.role = role;
     }
+    
 
     @Override
     public boolean equals(Object o) {

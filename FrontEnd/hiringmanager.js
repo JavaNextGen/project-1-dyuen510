@@ -13,6 +13,11 @@ $('#statusInput').on('click', statusChosen);
 $('#reimIdSubmit').on('click', locateTicket);
 $('#choiceInput').on('click', verify);
 
+
+let reimbursementId; // need
+let reimUserId;
+const userId = window.localStorage.getItem(2);
+
 const logOut = () => {
     window.localStorage.clear();
     window.location.href = localurl + 'login.html';
@@ -53,8 +58,8 @@ async function getEmployees(){
 }
 
 
-const userId = window.localStorage.getItem(2);
-    console.log(userId);
+// const userId = window.localStorage.getItem(2);
+//     console.log(userId);
 // reimbursementhistory
 
 async function getHistory() {
@@ -123,9 +128,7 @@ async function statusChosen(e){
     }
 }
 async function locateTicket(){
-    let reimbursementId = $('#reimId').val(); // need
-    let reimUserId;
-    let userId 
+    reimbursementId = $('#reimId').val(); // need
     let response = await fetch(url + 'reimbursementById/' + reimbursementId, {
         method: 'GET',
         body: JSON.stringify(),
@@ -135,12 +138,45 @@ async function locateTicket(){
     console.log(response.status);
     if(response.status === 200) {
         let data = await response.json();
-        console.log(data.value.author.id);
+        reimUserId = data.value.resolver.id;
+        reimStatusId = data.value.status_fkey;
+        console.log(reimUserId, reimStatusId);
         console.log(data);
     }
-    async function verify(e) {
-        e.preventDefault();
-        
-    
-    }
+
 } 
+
+async function verify(e){
+    if(userId != reimUserId && reimStatusId == 1){
+    e.preventDefault();
+    
+    let chosen = $('#choices').val();
+    let newStatusInt;
+
+    if(chosen == 'APPROVED'){
+        newStatusInt = 2;
+    }else if(chosen == 'DENIED'){
+        newStatusInt = 3;
+    }else{
+        console.log('ticket already has been processed');
+        alert('processed ticket cannot be updated.')
+    }
+    let userParseInt = parseInt(userId);
+    let reimParseInt = parseInt(reimbursementId);
+
+    let updateInfo = {
+        status_fkey : newStatusInt,
+        user_fkey_resolved : userParseInt,
+        id : reimParseInt
+    }
+    console.log(updateInfo);
+    let response = await fetch(url + 'reimbursement', {
+        method: 'PUT',
+        body: JSON.stringify(updateInfo),
+        credentials: 'include'
+    });
+    if(response.status === 200) {
+        console.log("successfully updated");
+    }
+}
+}

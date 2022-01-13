@@ -71,11 +71,25 @@ public class Reimbursement extends AbstractReimbursement {
 		
 	}
 	
-	
+//	rs.getInt("reimbursement_id"),
+//	enumStatus,
+//	u, // this returns an USER object with f_name and l_name but other values are null 
+//	rs.getDate("date_submitted"),
+//	rs.getDouble("amount"),
+//	rs.getInt("status_fkey")
+//	
+	public Reimbursement(int id, Status status, User resolver, Date date_submitted, double amount, int status_fkey) {
+		super();
+		this.id = id;
+		this.status = status;
+		this.resolver = resolver;
+		this.date_submitted = date_submitted;
+		this.amount = amount;
+		this.status_fkey = status_fkey;
+	}
  
 
-	public Reimbursement(int id, Status status, User resolver, Date date_resolved, int status_fkey,
-		int user_fkey_resolved) {
+	public Reimbursement(int id, Status status, User resolver, Date date_resolved, int status_fkey, int user_fkey_resolved) {
 	super();
 	this.id = id;
 	this.status = status;
@@ -139,7 +153,16 @@ public class Reimbursement extends AbstractReimbursement {
 	}
 
 
-    public int getId() {
+	
+	
+	public Reimbursement(int id, Date date_resolved, int status_fkey, int user_fkey_resolved) {
+		super();
+		this.id = id;
+		this.date_resolved = date_resolved;
+		this.status_fkey = status_fkey;
+		this.user_fkey_resolved = user_fkey_resolved;
+	}
+	public int getId() {
 		return id;
 	}
 
@@ -188,15 +211,42 @@ public class Reimbursement extends AbstractReimbursement {
  		this.description = description;
  	}
 
- 	public int getStatusFkey() {
- 		return status_fkey;
- 	}
+ 
 
- 	public void setStatusFkey(int status_fkey) {
- 		this.status_fkey = status_fkey;
- 	}
-
- 	public int getUserFkeyResolved() {
+ 	public int getStatus_fkey() {
+		return status_fkey;
+	}
+	public void setStatus_fkey(int status_fkey) {
+		this.status_fkey = status_fkey;
+	}
+	
+	
+	
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	public User getAuthor() {
+		return author;
+	}
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public int getUser_fkey_resolved() {
+		return user_fkey_resolved;
+	}
+	public void setUser_fkey_resolved(int user_fkey_resolved) {
+		this.user_fkey_resolved = user_fkey_resolved;
+	}
+	public int getUserFkeyResolved() {
  		return user_fkey_resolved;
  	}
  	

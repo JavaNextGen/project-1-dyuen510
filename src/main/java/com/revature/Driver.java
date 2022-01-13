@@ -47,8 +47,8 @@ public class Driver {
     	app.get("/reimbursementsByStatus/{status}", rc.getByStatusHandler);
     	app.get("/reimbursementById/{reimbursement_id}", rc.getByIntHandler);
     	app.get("/reimbursements/history/{user_id}", rc.getPastReimbursementsHandler);
-    Menu menu = new Menu();
-    menu.displayMenu();
+//    Menu menu = new Menu();
+//    menu.displayMenu();
     
 
 	};

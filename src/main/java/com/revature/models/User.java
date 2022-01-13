@@ -34,6 +34,7 @@ public class User extends AbstractUser {
 		this.l_name = l_name;
 	}
 	
+
 	public User(int id, String f_name, String l_name, String email, int user_role_fkey) {
 		super(id);
 		this.f_name = f_name;

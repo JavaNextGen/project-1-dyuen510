@@ -104,7 +104,7 @@ public class ReimbursementController {
 			
 			Reimbursement updateReimbursement = gson.fromJson(body, Reimbursement.class);
 			
-//			rs.process(updateReimbursement, finalStatus, resolver);
+			rs.process(updateReimbursement);
 			
 			
 			ctx.result("Successfully updated.");

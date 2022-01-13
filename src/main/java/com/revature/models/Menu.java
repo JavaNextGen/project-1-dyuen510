@@ -155,7 +155,7 @@ public class Menu {
 //        rs.process(unprocessedReimbursement, finalStatus, resolver);
         
         //update or process?
-    	rs.process(unprocessedReimbursement, finalStatus, resolver);
+    	rs.process(unprocessedReimbursement);
 //    	uDAO.getByUsername(username);
     	
     	//this only returns a STRING, cannot iterate to grab the values

@@ -33,7 +33,7 @@ public class ReimbursementDAO {
     		// might have to delete since it's menu -> services -> dao -> database
     		//only username here
 
-    		String sql = "SELECT f_name, l_name, user_role_fkey, user_id, date_submitted, reimbursement_id, amount, curr_status, type_name"
+    		String sql = "SELECT f_name, l_name, user_role_fkey, user_id, status_fkey, date_submitted, reimbursement_id, amount, curr_status, type_name"
     				+ " FROM reimbursements"
     				+ " LEFT JOIN curr_users"
     				+ " ON user_fkey_auth = user_id"
@@ -83,7 +83,8 @@ public class ReimbursementDAO {
     						enumStatus,
     						u, // this returns an USER object with f_name and l_name but other values are null 
     						rs.getDate("date_submitted"),
-    						rs.getDouble("amount")
+    						rs.getDouble("amount"),
+    						rs.getInt("status_fkey")
     					);
 //    				System.out.println(rs.getString("f_name"));
 //    				System.out.println(u);
@@ -241,7 +242,7 @@ public class ReimbursementDAO {
     
 // ############################################# UPDATE #################################################################
     //finalStatus and resolver.....
-    public Reimbursement update(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
+    public Reimbursement update(Reimbursement unprocessedReimbursement) {
     	//in menu I can probably allow user to getById and then process with this
     	// check if it's their own if it is then throw an error
 //    	String statusOutcome = null;
@@ -251,7 +252,7 @@ public class ReimbursementDAO {
     		//Maybe change everything to local date?
     		LocalDate localD = LocalDate.now();
     		java.sql.Date date_resolved = java.sql.Date.valueOf(localD);
-    		System.out.println(localD);
+//    		System.out.println(localD);
 //    		Date date = Date.from(localD.now());
     		//Thoughts :
     	//In this method I need to use the grab the f_name and maybe last name in the curr_users table as resolver with select query
@@ -267,31 +268,29 @@ public class ReimbursementDAO {
     		try (PreparedStatement ps = conn.prepareStatement(sql)){
 //        		System.out.println(unprocessedReimbursement.getStatusFkey());
 //        		System.out.println("heulskdjflk");
-    			ps.setInt(1, unprocessedReimbursement.getStatusFkey());
+    			ps.setInt(1, unprocessedReimbursement.getStatus_fkey());
     			ps.setInt(2, unprocessedReimbursement.getUserFkeyResolved()); // 0 for now
 //    			ps.setDate(3, unprocessedReimbursement.getDate_resolved());
     			ps.setDate(3, date_resolved);
     			ps.setInt(4, unprocessedReimbursement.getId());
     			ps.executeUpdate();
     			
-    			System.out.println("Reimbursment ticket " + unprocessedReimbursement.getId() + " by " + resolver  );
-    			System.out.println(unprocessedReimbursement.getStatusFkey());
-    			System.out.println(unprocessedReimbursement.getId());
+    			System.out.println(unprocessedReimbursement.getStatus_fkey());
     			System.out.println(unprocessedReimbursement.getUserFkeyResolved());
     			System.out.println(date_resolved);
+    			System.out.println(unprocessedReimbursement.getId());
+//    			System.out.println(date_resolved);
     			
     			int reimId = unprocessedReimbursement.getId();
     			
     			reimObject = new Reimbursement(
     	    			reimId,
-    	    			finalStatus,
-    	    			resolver,
     	    			date_resolved,
-    	    			unprocessedReimbursement.getStatusFkey(),
+    	    			unprocessedReimbursement.getStatus_fkey(),
     	    			unprocessedReimbursement.getUserFkeyResolved()
     					);
-    			
-    			System.out.println(reimObject);
+
+//    			System.out.println(reimObject);
     			return reimObject;
     			
     			

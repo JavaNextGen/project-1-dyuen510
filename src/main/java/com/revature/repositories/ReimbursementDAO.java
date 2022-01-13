@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 public class ReimbursementDAO {
 
@@ -32,7 +33,7 @@ public class ReimbursementDAO {
     		// might have to delete since it's menu -> services -> dao -> database
     		//only username here
 
-    		String sql = "SELECT f_name, l_name, date_submitted, reimbursement_id, amount, curr_status, type_name"
+    		String sql = "SELECT f_name, l_name, user_role_fkey, user_id, date_submitted, reimbursement_id, amount, curr_status, type_name"
     				+ " FROM reimbursements"
     				+ " LEFT JOIN curr_users"
     				+ " ON user_fkey_auth = user_id"
@@ -67,6 +68,9 @@ public class ReimbursementDAO {
     			}
     			u.setF_name(rs.getString("f_name"));
     			u.setL_name(rs.getString("l_name"));
+    			u.setUserRoleFkey(rs.getInt("user_role_fkey"));
+//    			u.setUsername(rs.getString("username"));
+    			u.setId(rs.getInt("user_id"));
 //    			String combineName = rs.getString("f_name") + rs.getString("l_name");
 //    			System.out.println(combineName);
     			System.out.println(rs.getDate("date_submitted"));
@@ -80,7 +84,6 @@ public class ReimbursementDAO {
     						u, // this returns an USER object with f_name and l_name but other values are null 
     						rs.getDate("date_submitted"),
     						rs.getDouble("amount")
-    						
     					);
 //    				System.out.println(rs.getString("f_name"));
 //    				System.out.println(u);
@@ -310,19 +313,28 @@ public class ReimbursementDAO {
  // ############################################# Submit NEW Reimbursement #################################################################
 	public void submitReimbursement(Reimbursement newReimbursement) {
 		// TODO Auto-generated method stub
-		
+		Random rd = new Random();
+    	byte[] receipt = new byte[7];
+    	rd.nextBytes(receipt);
 		//not sure if receipt bytea is needed.
 		try(Connection conn = ConnectionFactory.getConnection()){
 			String sql = "INSERT INTO reimbursements (amount, date_submitted, description, receipt, "
 					+ "user_fkey_auth, type_fkey, status_fkey)"
 					+ "VALUES(?, ?, ?, ?, ?, ?, 1)";
 			
+
+//	    	System.out.println(rd.nextBytes(receipt));
+	    	System.out.println(receipt);
+	    	System.out.println(newReimbursement.getType_id());
+	    	LocalDate localD = LocalDate.now();
+			java.sql.Date date_submit = java.sql.Date.valueOf(localD);
+			
 			try(PreparedStatement ps = conn.prepareStatement(sql)){
 				
 				ps.setDouble(1, newReimbursement.getAmount());
-				ps.setDate(2, newReimbursement.getDate_submitted());
+				ps.setDate(2, date_submit);
 				ps.setString(3, newReimbursement.getDescription());
-				ps.setBytes(4, newReimbursement.getReceipt());
+				ps.setBytes(4, receipt);
 				ps.setInt(5, newReimbursement.getUser_fkey_author());
 				ps.setInt(6, newReimbursement.getType_id());
 				

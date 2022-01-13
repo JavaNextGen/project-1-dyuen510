@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fullstack Project</title>
+    <link rel='stylesheet' href='employee.css'>
+</head>
+<body onload='getByUsername()'>
+    <div>
+        <div class='navbar'>
+            <ul>
+                <li><h3>Hello World</h3></li>
+                <li style='float:right'><a href='#' id='logout' onclick='logOut()'>Logout</a></li>
+            </ul>
+        </div>
+        <h2 id='welcome'></h2>
+        <hr/>
+        <div id='options'>
+        <h4>What would you like to do today?</h4>
+        <ul>
+        <li><a href='#' id='history'>View Past History</a></li>
+        <li><a href='#' id='submitForm'>Submit New Reimbursement</a></li>
+        </ul>
+        </div>
+
+    </div>
+    <div id='historyBlock'>
+
+    </div>
+    <div id='submitNew'>
+        <h1>Submit a New Request</h1>
+        <form>
+            <input id='amount' placeholder='enter amount' required/>
+            <input id='description' placeholder='enter description' required/>
+            <label>Reimbursement Type</label>
+            <input type='radio' name='type' value='1'/> Lodging
+            <input type='radio' name='type' value='2' /> Travel
+            <input type='radio' name='type' value='3'/> Food
+            <input type='radio' name='type' value='4' /> Other
+            <input id='newReim' type='submit' value='submit'>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src='employee.js'></script>
+    
+</body>
+</html>

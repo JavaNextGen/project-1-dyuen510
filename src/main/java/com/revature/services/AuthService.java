@@ -36,7 +36,8 @@ public class AuthService {
      */
 	
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
-    public boolean login(String username, String password) {
+    public int login(String username, String password) {
+    	int roleId = 0;
     	//might need a statement to select queries to database and check if it's equal
     	//instead of uDAO.create is there another uDAO method that lets us communicate with db?
     	//somehow put this java logic into the menu.java with the Login() method...
@@ -68,24 +69,30 @@ public class AuthService {
     	String dbUsername = us.getByUsername(username).get().getUsername();
     	String dbPassword = us.getByUsername(dbUsername).get().getPassword();
     	int dbRoleId = us.getByUsername(dbUsername).get().getUserRoleFkey();
+    	
 //    	System.out.println(username);
 //    	System.out.println(password);
     	
     		if(username.equals(dbUsername) && password.equals(dbPassword)) {
 //    			System.out.println("hello");
     			System.out.println("Successfully logged in");
-    			return true;
-//    			if(dbRoleId == 1) {
-//    				//redirect to employee page
-//    				return 1;
-//    			}else if(dbRoleId == 2) {
-//    				//redirect to finance manager page
-//    				return 2;
-//    			}
+    			
+    			if(us.getByUsername(username).get().getRole().equals(Role.EMPLOYEE)) {
+    				//redirect to employee page
+    				roleId = 1;
+    				return roleId;
+    			}else if(us.getByUsername(username).get().getRole().equals(Role.FINANCE_MANAGER)) {
+    				//redirect to finance manager page
+    				roleId = 2;
+    				return roleId;
+    			}else {
+    				System.out.println("Error");
+    			}
     		}else {
     			System.out.println("incorrect values");
-    			return false;
+//    			return 0;
     		}
+    		return roleId;
     }
     
     	

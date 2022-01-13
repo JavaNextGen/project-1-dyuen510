@@ -37,19 +37,29 @@ public class AuthController {
 		
 		Gson gson = new Gson();
 		
+		
 		LoginDTO LDTO = gson.fromJson(body, LoginDTO.class);
 		
-		if(as.login(LDTO.getUsername(), LDTO.getPassword())) {
+		if(as.login(LDTO.getUsername(), LDTO.getPassword()) == 1) {
 			
 			ctx.req.getSession();
 			
 			ctx.res.setHeader("Set-Cookie", "key=value; HttpOnly; SameSite=None; Secure");
 			
+			ctx.status(201);
+			ctx.result("Login Success Employee");
+		} else if(as.login(LDTO.getUsername(), LDTO.getPassword()) == 2){
+			ctx.req.getSession();
+		
+			ctx.res.setHeader("Set-Cookie", "key=value; HttpOnly; SameSite=None; Secure");
+			
 			ctx.status(202);
-			ctx.result("Login Success");
-		} else {
+			ctx.result("Login Success Hiring Manager");
+
+		}else {
 			ctx.status(401);
 			ctx.result("Login Failed!");
+			System.out.println(as.login(LDTO.getUsername(), LDTO.getPassword()));
 		}
 	};
 }

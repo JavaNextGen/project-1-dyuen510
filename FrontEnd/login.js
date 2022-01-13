@@ -41,6 +41,8 @@ async function loginFunction() {
     };
 
     console.log(user);
+    console.log(user.username);
+    window.localStorage.setItem(1, user.username);
 
     let response = await fetch (url + 'login', {
         method: 'POST',
@@ -49,6 +51,14 @@ async function loginFunction() {
     });
 
     console.log(response.status);
+
+    if(response.status == 201){
+        window.location.href = localurl + 'employee.html';
+    }else if(response.status == 202){
+        window.location.href = localurl + 'hiring_manager.html'
+    }else{
+        alert('Error in logging in please try again')
+    }
 };
 
 const signUp =() => {

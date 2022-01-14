@@ -9,6 +9,10 @@ $('#welcome').on('click', function(){
 $('#history').on('click', getHistory);
 $('#newReim').on('click', submitNewReim);
 
+$('#submitForm').on('click', function(){
+    $('#submitNew').show();
+})
+
 const logOut = () => {
     window.localStorage.clear();
     window.location.href = localurl + 'login.html';
@@ -47,6 +51,7 @@ console.log(user);
 // reimbursementhistory
 
 async function getHistory() {
+    $('#historyBlock').show();
     let response = await fetch(url + 'reimbursements/history/' + userId, {
         method:'GET',
         body: JSON.stringify(),

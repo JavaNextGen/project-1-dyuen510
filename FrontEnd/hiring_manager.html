@@ -32,21 +32,21 @@
     </nav>
         <hr/>
         <div id='options'>
-        <h4>What would you like to do today?</h4>
+        <h3>What would you like to do today?</h3>
         
         <ul>
-            <li><a href='#' id='history'>View Past History</a></li> <!-- done -->
-            <li><a href='#' id='reimButton'>Submit New Reimbursement</a></li> <!-- done -->
-            <li><a href='#' id='getAllEmployees'>See All Employees</a></li> <!-- done -->
-            <li><a href='#' id='submitForm'>See Reimbursements</a></li> <!-- done -->
+            <li><a href='#' class='nav' id='history'>View Past History</a></li> <!-- done -->
+            <li><a href='#' class='nav' id='reimButton'>Submit New Reimbursement</a></li> <!-- done -->
+            <li><a href='#' class='nav' id='getAllEmployees'>See All Employees</a></li> <!-- done -->
+            <li><a href='#' class='nav' id='submitForm'>See Reimbursements</a></li> <!-- done -->
             
-            <li><a href='#' id='verifyReim'>Verify Reimbursement</a></li>
+            <li><a href='#' class='nav' id='verifyReim'>Verify Reimbursement</a></li>
         </ul>
         </div>
 
     </div>
     <!-- VIEW PAST HISTORY  -->
-    <div id='getHist' class='container'>
+    <div id='getHist' class='container' style='display:none'>
         <div id='getHistory' class='row'>
             <table id='historyTable' class='table table-hover table-bordered'>
                 <thead>
@@ -86,7 +86,7 @@
 
     <div>
     <div id='locate_verify'>
-        Approve or Deny a Reimbursement Request
+        <h4>Approve or Deny a Reimbursement Request</h4>
         <input id = 'reimId' placeholder='enter reimbursement id' />
         <input id = 'reimIdSubmit' type='submit' value='submit'>
     </div>
@@ -125,7 +125,7 @@
         </div>
     </div>
     <!-- <div id ='class='container'> -->
-        <div id = 'seeReimbursements'>
+        <div id = 'seeReimbursements' style='display:none'>
             <form>
                 <label>Search Reimbursements by Status</label>
                 <select name="status" id="status">
@@ -139,7 +139,23 @@
             
         </div>
     <!-- </div> -->
-
+    <div id='getByStat' class='container' style='display:none'>
+        <div id='getAllReims' class='row'>
+            <table id='statusTable' class='table table-hover table-bordered table-dark'>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody id='statusBody'>
+    
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src='hiringmanager.js'></script>

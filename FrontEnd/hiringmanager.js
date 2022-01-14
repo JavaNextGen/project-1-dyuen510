@@ -19,6 +19,10 @@ $('#reimButton').on('click', function(){
     $('#newR').show();
 })
 
+$('#submitForm').on('click',function(){
+    $('#seeReimbursements').show();
+})
+
 let reimbursementId; // need
 let reimUserId;
 const userId = window.localStorage.getItem(2);
@@ -91,6 +95,7 @@ async function getEmployees(){
 // reimbursementhistory
 
 async function getHistory() {
+    $('#getHist').show();
     getByUsername();
     let response = await fetch(url + 'reimbursements/history/' + userId, {
         method:'GET',
@@ -171,8 +176,10 @@ async function submitNewReim(e) {
 console.log('hello');
 //status 
 async function statusChosen(e){
+    $('#seeReimbursements').show();
     e.preventDefault();
-    
+
+    $('#getByStat').show();
     // var select = $('#status');
     // var value = $('option[name="stat"]:selected').val();
     
@@ -188,6 +195,37 @@ async function statusChosen(e){
     if(response.status === 200) {
         let data = await response.json();
         console.log(data);
+
+        for(let stat of data){
+            let row = document.createElement('tr');
+            if(stat.status=='PENDING'){
+                row.setAttribute('class', 'table-default')
+            }else if(stat.status=='APPROVED'){
+                row.setAttribute('class', 'table-primary')
+            }else{
+                row.setAttribute('class', 'table-danger')
+            }
+            // let row = document.createElement('tr');
+            let cell = document.createElement('td');
+    
+            cell.innerHTML = stat.id;
+            row.appendChild(cell);
+    
+            let cell2 = document.createElement('td');
+            cell2.innerHTML = stat.amount;
+            row.appendChild(cell2);
+    
+            let cell3 = document.createElement('td');
+            cell3.innerHTML = stat.type;
+            row.appendChild(cell3);
+    
+            let cell4 = document.createElement('td');
+            cell4.innerHTML = stat.status;
+            row.appendChild(cell4);
+    
+            $('#statusBody').append(row);
+    
+        }
     }
 }
 async function locateTicket(){

@@ -19,6 +19,10 @@ $('#reimButton').on('click', function(){
     $('#newR').show();
 })
 
+$('#verifyReim').on('click',function(){
+    $('#locate_verify').show();
+})
+
 $('#submitForm').on('click',function(){
     $('#seeReimbursements').show();
 })
@@ -130,7 +134,11 @@ async function getHistory() {
             let cell3 = document.createElement('td');
             cell3.innerHTML = history.status;
             row.appendChild(cell3);
-    
+            
+            let cell5 = document.createElement('td');
+            cell5.innerText = history.date_submitted;
+            row.appendChild(cell5);
+
             let cell4 = document.createElement('td');
             cell4.innerHTML = history.user_fkey_resolved;
             row.appendChild(cell4);
@@ -170,7 +178,7 @@ async function submitNewReim(e) {
     });
 
     console.log(response.status);
-
+alert('reimbursement amount : $' + reimbursement.amount + ' for ' + reimbursement.description + ' has been submitted.')
 }
 
 console.log('hello');
@@ -229,6 +237,8 @@ async function statusChosen(e){
     }
 }
 async function locateTicket(){
+    $('#approval').show();
+    // $('#locate_verify').hide();
     reimbursementId = $('#reimId').val(); // need
     let response = await fetch(url + 'reimbursementById/' + reimbursementId, {
         method: 'GET',
@@ -243,6 +253,38 @@ async function locateTicket(){
         reimStatusId = data.value.status_fkey;
         console.log(reimUserId, reimStatusId);
         console.log(data);
+        let ticket = data;
+        // console.log(ticket.value.amount);
+            let row = document.createElement('tr');
+            if(ticket.value.status !== 'PENDING'){
+                alert('this ticket has already been resolved');
+            }
+            // let row = document.createElement('tr');
+            let cell = document.createElement('td');
+    
+            cell.innerHTML = ticket.value.id;
+            row.appendChild(cell);
+    
+            let cell2 = document.createElement('td');
+            cell2.innerHTML = ticket.value.amount;
+            row.appendChild(cell2);
+
+            let cell6 = document.createElement('td');
+            cell6.innerHTML = ticket.value.description;
+            row.appendChild(cell6);
+    
+            let cell4 = document.createElement('td');
+            cell4.innerHTML = ticket.value.status;
+            row.appendChild(cell4);
+            if(ticket.value.status !== 'PENDING'){
+                let cell5 = document.createElement('td');
+                cell5.innerHTML = ticket.value.resolver.f_name + ' ' + ticket.value.resolver.l_name;
+                row.appendChild(cell5);
+            }
+
+            $('#reimInfo').append(row);
+    
+        
     }
 
 } 
@@ -280,6 +322,7 @@ async function verify(e){
     });
     if(response.status === 200) {
         console.log("successfully updated");
+        alert('Ticket ID ' + updateInfo.id + ' has been successfully updated to ' + chosen );
     }
 }
 }

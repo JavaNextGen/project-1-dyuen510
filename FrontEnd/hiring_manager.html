@@ -85,15 +85,33 @@
 
 
     <div>
-    <div id='locate_verify'>
+    <div id='locate_verify' style='display:none'>
         <h4>Approve or Deny a Reimbursement Request</h4>
         <input id = 'reimId' placeholder='enter reimbursement id' />
         <input id = 'reimIdSubmit' type='submit' value='submit'>
     </div>
-    <div id = 'approval'>
+    <div id = 'approval' style='display:none'>
         <!-- place reimbursement content here -->
-        <form>
+        <form id='approvalForm'>
             <label>Approve or Deny this ticket?</label>
+            <div id='getAllReims' class='row'>
+                <table id='statusTable' class='table table-hover table-bordered table-dark'>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Approved By</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id='reimInfo'>
+        
+                    </tbody>
+                </table>
+            </div>
+            <div id='whiteSpace'></div>
             <select name="choices" id="choices">
               <option value="APPROVED">Approved</option>
               <option value="DENIED">Denied</option>
@@ -126,7 +144,7 @@
     </div>
     <!-- <div id ='class='container'> -->
         <div id = 'seeReimbursements' style='display:none'>
-            <form>
+            <form id='statusForm'>
                 <label>Search Reimbursements by Status</label>
                 <select name="status" id="status">
                   <option value="PENDING">Pending</option>
@@ -145,9 +163,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody id='statusBody'>

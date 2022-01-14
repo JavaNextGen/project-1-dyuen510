@@ -37,11 +37,12 @@ public class Reimbursement extends AbstractReimbursement {
      * This includes the minimum parameters needed for the {@link com.revature.models.AbstractReimbursement} class.
      * If other fields are needed, please create additional constructors.
      */
-	public Reimbursement(int id, int user_fkey_author, double amount, Date date_submitted, Date date_resolved, byte[] receipt, Status status) {
+	public Reimbursement(int id, int user_fkey_author, int user_fkey_resolved, double amount, Date date_submitted, Date date_resolved, byte[] receipt, Status status) {
 		// TODO Auto-generated constructor stub
 		super();
 		this.id = id;
 		this.user_fkey_author = user_fkey_author;
+		this.user_fkey_resolved = user_fkey_resolved;
 		this.amount = amount;
 		this.date_submitted = date_submitted;
 		this.date_resolved = date_resolved;
@@ -83,10 +84,11 @@ public class Reimbursement extends AbstractReimbursement {
 //	rs.getDouble("amount"),
 //	rs.getInt("status_fkey")
 //	
-	public Reimbursement(int id, Status status, User resolver, Date date_submitted, double amount, int status_fkey) {
+	public Reimbursement(int id, Status status, String description, User resolver, Date date_submitted, double amount, int status_fkey) {
 		super();
 		this.id = id;
 		this.status = status;
+		this.description = description;
 		this.resolver = resolver;
 		this.date_submitted = date_submitted;
 		this.amount = amount;

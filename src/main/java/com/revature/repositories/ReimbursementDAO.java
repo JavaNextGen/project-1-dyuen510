@@ -33,7 +33,7 @@ public class ReimbursementDAO {
     		// might have to delete since it's menu -> services -> dao -> database
     		//only username here
 
-    		String sql = "SELECT f_name, l_name, user_role_fkey, user_id, status_fkey, date_submitted, reimbursement_id, amount, curr_status, type_name"
+    		String sql = "SELECT f_name, l_name, user_role_fkey, user_id, description, status_fkey, date_submitted, reimbursement_id, amount, curr_status, type_name"
     				+ " FROM reimbursements"
     				+ " LEFT JOIN curr_users"
     				+ " ON user_fkey_auth = user_id"
@@ -81,6 +81,7 @@ public class ReimbursementDAO {
     				Reimbursement r = new Reimbursement(
     						rs.getInt("reimbursement_id"),
     						enumStatus,
+    						rs.getString("description"),
     						u, // this returns an USER object with f_name and l_name but other values are null 
     						rs.getDate("date_submitted"),
     						rs.getDouble("amount"),
@@ -352,7 +353,7 @@ public class ReimbursementDAO {
 			try(Connection conn = ConnectionFactory.getConnection()){
 				
 				ResultSet rs = null;
-				String sql = "SELECT reimbursement_id, user_fkey_auth, amount, date_submitted,"
+				String sql = "SELECT reimbursement_id, user_fkey_auth, user_fkey_resolved, amount, date_submitted,"
 						+ " date_resolved, receipt, curr_status"
 						+ " FROM  reimbursements"
 						+ " LEFT JOIN status"
@@ -383,6 +384,7 @@ public class ReimbursementDAO {
 						Reimbursement r = new Reimbursement(
 								rs.getInt("reimbursement_id"),
 								rs.getInt("user_fkey_auth"),
+								rs.getInt("user_fkey_resolved"),
 								rs.getDouble("amount"),
 								rs.getDate("date_submitted"),
 								rs.getDate("date_resolved"),

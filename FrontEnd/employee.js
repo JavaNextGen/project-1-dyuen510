@@ -126,8 +126,8 @@ async function submitNewReim(e) {
         credentials: 'include'
     });
 
-    console.log(response.status);
-
+    console.log(response);
+    alert('reimbursement amount : $' + reimbursement.amount + ' for ' + reimbursement.description + ' has been submitted.')
 }
 
 

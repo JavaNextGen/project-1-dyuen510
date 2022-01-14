@@ -252,7 +252,8 @@ public class ReimbursementDAO {
     		//Maybe change everything to local date?
     		LocalDate localD = LocalDate.now();
     		java.sql.Date date_resolved = java.sql.Date.valueOf(localD);
-//    		System.out.println(localD);
+    		System.out.println(localD);
+    		System.out.println(unprocessedReimbursement);
 //    		Date date = Date.from(localD.now());
     		//Thoughts :
     	//In this method I need to use the grab the f_name and maybe last name in the curr_users table as resolver with select query
@@ -262,7 +263,7 @@ public class ReimbursementDAO {
     	
     	//Basically I just need to insert to the reimbursement table by selecting the reimbursement_id and updating 
     		// status_fkey, user_fkey_resolved, and date_resolved
-    		Reimbursement reimObject = new Reimbursement();
+//    		Reimbursement reimObject = new Reimbursement();
 
     		String sql = "UPDATE reimbursements SET status_fkey = ?, user_fkey_resolved = ?, date_resolved = ? WHERE reimbursement_id = ?";
     		try (PreparedStatement ps = conn.prepareStatement(sql)){
@@ -275,23 +276,18 @@ public class ReimbursementDAO {
     			ps.setInt(4, unprocessedReimbursement.getId());
     			ps.executeUpdate();
     			
-    			System.out.println(unprocessedReimbursement.getStatus_fkey());
-    			System.out.println(unprocessedReimbursement.getUserFkeyResolved());
-    			System.out.println(date_resolved);
-    			System.out.println(unprocessedReimbursement.getId());
-//    			System.out.println(date_resolved);
     			
-    			int reimId = unprocessedReimbursement.getId();
+//    			int reimId = unprocessedReimbursement.getId();
     			
-    			reimObject = new Reimbursement(
-    	    			reimId,
-    	    			date_resolved,
-    	    			unprocessedReimbursement.getStatus_fkey(),
-    	    			unprocessedReimbursement.getUserFkeyResolved()
-    					);
-
+//    			reimObject = new Reimbursement(
+//    	    			reimId,
+//    	    			date_resolved,
+//    	    			unprocessedReimbursement.getStatus_fkey(),
+//    	    			unprocessedReimbursement.getUserFkeyResolved()
+//    					);
+//    			
 //    			System.out.println(reimObject);
-    			return reimObject;
+//    			return reimObject;
     			
     			
     		}catch(SQLException e) {

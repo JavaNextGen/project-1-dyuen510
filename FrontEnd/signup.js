@@ -19,9 +19,9 @@ async function createFunction(e){
     let role = $('input[name="role"]:checked').val();
     let roleFkey;
 
-    if(role == 'employee'){
+    if(role === 'employee'){
         roleFkey = 1;
-    }else if(role =='finance_manager'){
+    }else if(role === 'finance_manager'){
         roleFkey = 2;
     }
 
@@ -38,6 +38,7 @@ async function createFunction(e){
         user_role_fkey : roleFkey
     };
     console.log(user);
+    console.log(roleFkey);
 
     let response = await fetch (url + 'username', {
         method: 'POST',

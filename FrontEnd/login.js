@@ -1,8 +1,6 @@
 const url = 'http://localhost:3000/';
 const localurl = 'file:///C:/Project/project-1-dyuen510/FrontEnd/';
 
-$('#getUsersButton').on('click', showUsers);
-
 
 // async function showUsers() {
 //     const result = await $.ajax({
@@ -17,8 +15,8 @@ $('#getUsersButton').on('click', showUsers);
 //     })
 // }
 
-$('#loginButton').on('click', loginFunction);
 
+$('#loginButton').on('click', loginFunction);
 async function showUsers() {
     let response = await fetch(url + 'users', {credentials:'include'});
 

@@ -98,13 +98,13 @@ public class ReimbursementController {
 		
 	public Handler updateReimbursementHandler = (ctx) -> {
 		if(ctx.req.getSession(true) != null) {
-			
 			String body = ctx.body();
+			System.out.println("testsss + "  + body);
 			Gson gson = new Gson();
 			
 			Reimbursement updateReimbursement = gson.fromJson(body, Reimbursement.class);
 			
-			rs.process(updateReimbursement);
+			rs.process(updateReimbursement);    
 			
 			
 			ctx.result("Successfully updated.");

@@ -48,8 +48,13 @@ public class Reimbursement extends AbstractReimbursement {
 		this.receipt = receipt;
 		this.status = status;
 	}
-	public Reimbursement() {
+	
+	public Reimbursement(int id, Date date_resolved, int status_fkey, int user_fkey_resolved ) {
 		super();
+		this.id = id;
+		this.date_resolved = date_resolved;
+		this.user_fkey_resolved = user_fkey_resolved;
+		this.status_fkey = status_fkey;
 	};
 	
 //	public Reimbursement(int id, String type, Status status, double amount) {
@@ -153,15 +158,14 @@ public class Reimbursement extends AbstractReimbursement {
 	}
 
 
-	
-	
-	public Reimbursement(int id, Date date_resolved, int status_fkey, int user_fkey_resolved) {
-		super();
-		this.id = id;
-		this.date_resolved = date_resolved;
-		this.status_fkey = status_fkey;
+    public int getUser_fkey_resolved() {
+		return user_fkey_resolved;
+	}
+
+	public void setUser_fkey_resolved(int user_fkey_resolved) {
 		this.user_fkey_resolved = user_fkey_resolved;
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -220,32 +224,6 @@ public class Reimbursement extends AbstractReimbursement {
 		this.status_fkey = status_fkey;
 	}
 	
-	
-	
-	public Status getStatus() {
-		return status;
-	}
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-	public User getAuthor() {
-		return author;
-	}
-	public void setAuthor(User author) {
-		this.author = author;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public int getUser_fkey_resolved() {
-		return user_fkey_resolved;
-	}
-	public void setUser_fkey_resolved(int user_fkey_resolved) {
-		this.user_fkey_resolved = user_fkey_resolved;
-	}
 	public int getUserFkeyResolved() {
  		return user_fkey_resolved;
  	}

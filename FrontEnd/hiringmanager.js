@@ -3,7 +3,10 @@ const localurl = 'file:///C:/Project/project-1-dyuen510/FrontEnd/';
 const user = window.localStorage.getItem(1);
 console.log(user);
 // $(document).ready(getByUsername());
-
+$('#welcome').append(' ' + window.localStorage.getItem(1));
+$('#welcome').on('click', function(){
+    location.reload();
+})
 
 $('#getAllEmployees').on('click', getEmployees);
 // $('#verifyReim').on('click', verifyReimbursements);
@@ -12,7 +15,9 @@ $('#newReim').on('click', submitNewReim);
 $('#statusInput').on('click', statusChosen);
 $('#reimIdSubmit').on('click', locateTicket);
 $('#choiceInput').on('click', verify);
-
+$('#reimButton').on('click', function(){
+    $('#newR').show();
+})
 
 let reimbursementId; // need
 let reimUserId;
@@ -41,7 +46,7 @@ async function getByUsername() {
 
 
 async function getEmployees(){
-    
+    $('#getE').show();
     let response = await fetch(url + 'users',{
     method:'GET',
     body:JSON.stringify(),
@@ -53,6 +58,29 @@ async function getEmployees(){
         let data = await response.json();
 
         console.log(data);
+
+        for(let employee of data){
+            let row = document.createElement('tr');
+            let cell = document.createElement('td');
+
+            cell.innerHTML = employee.id;
+            row.appendChild(cell);
+
+            let cell2 = document.createElement('td');
+            cell2.innerHTML = employee.f_name;
+            row.appendChild(cell2);
+
+            let cell3 = document.createElement('td');
+            cell3.innerHTML = employee.l_name;
+            row.appendChild(cell3);
+
+            let cell4 = document.createElement('td');
+            cell4.innerHTML = employee.email;
+            row.appendChild(cell4);
+
+            $('#employeeBody').append(row);
+
+        }
 
     }
 }
@@ -74,13 +102,48 @@ async function getHistory() {
     if(response.status === 200) {
         let data = await response.json();
         console.log(data);
+
+        for(let history of data){
+            let row = document.createElement('tr');
+            if(history.status=='PENDING'){
+                row.setAttribute('class', 'table-default')
+            }else if(history.status=='APPROVED'){
+                row.setAttribute('class', 'table-primary')
+            }else{
+                row.setAttribute('class', 'table-danger')
+            }
+            // let row = document.createElement('tr');
+            let cell = document.createElement('td');
+    
+            cell.innerHTML = history.id;
+            row.appendChild(cell);
+    
+            let cell2 = document.createElement('td');
+            cell2.innerHTML = history.amount;
+            row.appendChild(cell2);
+    
+            let cell3 = document.createElement('td');
+            cell3.innerHTML = history.status;
+            row.appendChild(cell3);
+    
+            let cell4 = document.createElement('td');
+            cell4.innerHTML = history.user_fkey_resolved;
+            row.appendChild(cell4);
+    
+            $('#historyBody').append(row);
+    
+        }
+
     }
+
+
 }
 
 //submit new reimbursement
 async function submitNewReim(e) {
     e.preventDefault();
-
+    
+    
     let amount = $('#amount').val();
     let description = $('#description').val();
     let type = $('input[name="type"]:checked').val();
@@ -147,8 +210,9 @@ async function locateTicket(){
 } 
 
 async function verify(e){
-    if(userId != reimUserId && reimStatusId == 1){
     e.preventDefault();
+    if(userId != reimUserId && reimStatusId == 1){
+
     
     let chosen = $('#choices').val();
     let newStatusInt;
@@ -161,7 +225,7 @@ async function verify(e){
         console.log('ticket already has been processed');
         alert('processed ticket cannot be updated.')
     }
-    let userParseInt = parseInt(userId);
+    let userParseInt = userId;
     let reimParseInt = parseInt(reimbursementId);
 
     let updateInfo = {
@@ -170,6 +234,7 @@ async function verify(e){
         id : reimParseInt
     }
     console.log(updateInfo);
+    // console.log(user_fkey_resolved);
     let response = await fetch(url + 'reimbursement', {
         method: 'PUT',
         body: JSON.stringify(updateInfo),

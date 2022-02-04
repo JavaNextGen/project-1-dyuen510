@@ -3,12 +3,15 @@ const localurl = 'file:///C:/Project/project-1-dyuen510/FrontEnd/';
 
 $('#signup').on('click', createFunction);
 
-
+function Home() {
+    window.location.href = localurl + 'login.html';
+}
 
 
 async function createFunction(e){
     e.preventDefault();
-
+    $('#home').show();
+    $('#signuptext').hide();
     // let response = await fetch(url + 'username', {credentials:'include'});
 
     let usern = $('#username').val();

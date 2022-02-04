@@ -291,7 +291,7 @@ async function locateTicket(){
 
 async function verify(e){
     e.preventDefault();
-    if(userId != reimUserId && reimStatusId == 1){
+    if(userId !== reimUserId && reimStatusId === 1){
 
     
     let chosen = $('#choices').val();
@@ -320,9 +320,15 @@ async function verify(e){
         body: JSON.stringify(updateInfo),
         credentials: 'include'
     });
-    if(response.status === 200) {
+    // if(response.status === 200) {
         console.log("successfully updated");
-        alert('Ticket ID ' + updateInfo.id + ' has been successfully updated to ' + chosen );
-    }
+        console.log(userId);
+        console.log(reimUserId);
+        if(userId !== reimUserId){
+            alert('Ticket ID ' + updateInfo.id + ' has been successfully updated to ' + chosen );
+        }else{
+            alert('You cannot update your own reimbursement ticket');
+        }
+    // }
 }
 }

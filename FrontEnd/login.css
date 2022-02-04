@@ -63,3 +63,10 @@ margin:50px 400px 0 400px;
     background-color:beige;
 
 }
+
+#createButton {
+    font-size:13px;
+    font-weight:bold;
+    margin:2px;
+    height:auto;
+}
